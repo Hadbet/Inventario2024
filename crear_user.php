@@ -26,10 +26,6 @@
                     <div class="card-body">
                         <div class="row">
 
-                            <h2 class="text-center">Actualizar Counted Qty en excel</h2>
-                            <button class="btn btn-success text-right btnExcel" id="btnExcelExcelQty"> Subir Excel</button>
-                            <input type="file" id="fileInputExcelQty" accept=".xlsx, .xls" style="display: none;" />
-
                             <div class="col-md-1">
                                 <div class="form-group mb-3">
                                     <label for="cbCurso">Nomina</label>
@@ -112,6 +108,10 @@
                             class="fe fe-send fe-16 ml-2"></span></button>
                 <button type="button" onclick="masivo(0);" class="btn mb-2 btn-danger float-right text-white">Deshabilitar todos<span
                             class="fe fe-x-circle fe-16 ml-2"></span></button>
+
+                <button type="button" class="btn mb-2 btn-danger float-right text-white" id="btnExcelExcelQty">Subir todos<span
+                            class="fe fe-x-circle fe-16 ml-2"></span></button>
+                <input type="file" id="fileInputExcelQty" accept=".xlsx, .xls" style="display: none;" />
 
               <h2 class="mb-2 page-title">Lista de marbetes capturados</h2>
 
