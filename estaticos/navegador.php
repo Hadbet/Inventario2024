@@ -34,6 +34,7 @@ if ($tipoArea==0){
     $captura = '<ul class="collapse list-unstyled pl-4 w-100 collapse show" id="contact">
                     <a class="nav-link pl-3" href="form_registro_almacen.php"><span class="ml-1">Captura Almacen</span></a>
                 </ul>';
+    $auditor='<a class="nav-link pl-3" href="form_validacion_produccion.php"><span class="ml-1">Validacion</span></a>';
 }
 
 ?>

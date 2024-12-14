@@ -51,7 +51,7 @@ if (strlen($nomina) == 7) {
 <div class="wrapper">
 
     <?php
-            require_once('estaticos/navegador.php');
+    require_once('estaticos/navegador.php');
     ?>
 
     <main role="main" class="main-content">
@@ -68,26 +68,26 @@ if (strlen($nomina) == 7) {
                         </div>
                         <div class="card-body">
                             <div class="row">
-                               <div class="col-md-6">
-                                        <div class="form-group mb-3">
-                                            <label for="txtFolio">Escanea el marbete</label>
-                                            <div id="reader" width="600px"></div>
-                                            <input type="text" class="form-control"
-                                                   id="scanner_input" autocomplete="off">
-                                            <br>
-                                       </div>
-                                    </div> <!-- /.col -->
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <br>
-                                            <button class="btn btn-success text-white mt-2" onclick="escaneo()">Escanear</button>
-                                        </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="txtFolio">Escanea el marbete</label>
+                                        <div id="reader" width="600px"></div>
+                                        <input type="text" class="form-control"
+                                               id="scanner_input" autocomplete="off">
+                                        <br>
                                     </div>
+                                </div> <!-- /.col -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <br>
+                                        <button class="btn btn-success text-white mt-2" onclick="escaneo()">Escanear</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="card-footer">
                             <button class="btn mb-2 btn-success float-right text-white" onclick="manualMarbete()">Siguiente<span
-                                    class="fe fe-chevron-right fe-16 ml-2"></span></button>
+                                        class="fe fe-chevron-right fe-16 ml-2"></span></button>
                         </div>
                     </div> <!-- / .card -->
                 </div> <!-- .col-12 -->
@@ -101,12 +101,22 @@ if (strlen($nomina) == 7) {
                         <div class="card-body">
                             <p class="mb-3"><strong>Captura</strong></p>
 
+                            <label for="basic-url">Número de parte</label>
+                            <div class="input-group mb-3">
+                                <input type="text" id="txtNumeroParte" class="form-control" autocomplete="off"  aria-label="Recipient's username" aria-describedby="button-addon2">
+                            </div>
+
                             <label for="basic-url">Cantidad</label>
                             <div class="input-group mb-3">
-                                <input type="text" id="txtCantidad" disabled class="form-control" aria-label="Recipient's username" autocomplete="off" aria-describedby="basic-addon2">
+                                <input type="number" id="txtCantidad" disabled class="form-control" aria-label="Recipient's username" autocomplete="off" aria-describedby="basic-addon2">
                                 <div class="input-group-append">
                                     <span class="input-group-text" id="txtUnidadMedida" style=""></span>
                                 </div>
+                            </div>
+
+                            <label for="basic-url">Storage Bin</label>
+                            <div class="input-group mb-3">
+                                <input type="text" id="txtStorageBin" disabled class="form-control" aria-label="Recipient's username" autocomplete="off" aria-describedby="basic-addon2">
                             </div>
 
                         </div>
@@ -230,6 +240,11 @@ if (strlen($nomina) == 7) {
                     document.getElementById('txtCantidad').disabled = false;
                     document.getElementById('txtCantidad').focus()
 
+                    document.getElementById('txtNumeroParte').disabled = true;
+
+                    document.getElementById('txtNumeroParte').value = data.data[i].GrammerNo;
+                    document.getElementById('txtStorageBin').value = storageBinF;
+
                     var txtCantidad = document.getElementById('txtCantidad');
 
                     if (data.data[i].UM === 'PC') {
@@ -283,8 +298,14 @@ if (strlen($nomina) == 7) {
                 }else {
                     document.getElementById('lblCantidad').textContent = this.value;
                     if (document.getElementById('txtCantidad').value!==""){
-                        document.getElementById('btnFin').disabled = false;
-                        document.getElementById("btnFin").scrollIntoView({behavior: "smooth"});
+                        if (document.getElementById("lblStorageBin").innerText==="" || document.getElementById("lblStorageBin").innerText==="NA"){
+                            document.getElementById('txtStorageBin').disabled = false;
+                            document.getElementById('txtStorageBin').focus();
+                        }else{
+                            document.getElementById('btnFin').disabled = false;
+                            document.getElementById("btnFin").scrollIntoView({behavior: "smooth"});
+                            document.getElementById("btnFin").focus();
+                        }
                     }else{
                         Swal.fire({
                             title: "Ingresa la cantidad",
@@ -319,7 +340,14 @@ if (strlen($nomina) == 7) {
                                     storageBin=data.data[i].StorageBin;
                                     document.getElementById("reader").style.display = 'none';
                                     document.getElementById("lblFolio").innerHTML = marbete;
-                                    cargarNumeroParte(numeroParte,storageBin);
+                                    if (numeroParte===""){
+                                        document.getElementById("pasoDos").style.display = 'block';
+                                        document.getElementById("pasoUno").style.display = 'none';
+                                        document.getElementById('txtNumeroParte').disabled = false;
+                                        document.getElementById('txtNumeroParte').focus();
+                                    }else{
+                                        cargarNumeroParte(numeroParte,storageBin);
+                                    }
                                 }else{
                                     Swal.fire({
                                         title: "El marbete no pertenece al area",
@@ -420,6 +448,77 @@ if (strlen($nomina) == 7) {
     document.getElementById('scanner_input').addEventListener('keyup', function(event) {
         if (event.key === 'Enter' || event.keyCode === 13) {
             manualMarbete();
+        }
+    });
+
+    document.getElementById('txtNumeroParte').addEventListener('keyup', function(event) {
+        this.value = this.value.toUpperCase();
+        var inputValue = this.value;
+        document.getElementById('lblNumeroParte').textContent = inputValue;
+        if (event.key === 'Enter' || event.keyCode === 13) {
+            $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaParte.php?parte='+this.value, function (data) {
+                if (data && data.data && data.data.length > 0) {
+                    for (var i = 0; i < data.data.length; i++) {
+                        if (data.data[i].GrammerNo) {
+                            costoUnitario = data.data[i].Costo / data.data[i].Por;
+                            document.getElementById('lblDescripcion').innerText = data.data[i].Descripcion;
+                            document.getElementById('txtUnidadMedida').innerText = data.data[i].UM;
+                            document.getElementById('lblCosto').innerText = costoUnitario.toFixed(2);
+                            document.getElementById('txtCantidad').disabled = false;
+                            document.getElementById('txtCantidad').focus()
+                        } else {
+                            bandera=0;
+                            Swal.fire({
+                                title: "El numero de parte no existe",
+                                text: "Verificalo con la mesa de control",
+                                icon: "error"
+                            });
+                        }
+                    }
+                }else{
+                    Swal.fire({
+                        title: "El numero de parte no existe en base",
+                        text: "Verificalo con la mesa de control",
+                        icon: "error"
+                    });
+                }
+
+            });
+
+        }
+    });
+
+    document.getElementById('txtStorageBin').addEventListener('input', function (evt) {
+        this.value = this.value.toUpperCase();
+        document.getElementById("lblStorageBin").innerText = this.value;
+    });
+
+    document.getElementById('txtStorageBin').addEventListener('keyup', function(event) {
+        if (event.key === 'Enter' || event.keyCode === 13) {
+            if (document.getElementById("txtStorageBin").value!==""){
+                $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaTypes.php?bin='+document.getElementById("txtStorageBin").value, function (data) {
+                    if (data && data.data && data.data.length > 0) {
+                        for (var i = 0; i < data.data.length; i++) {
+                            document.getElementById('btnFin').disabled = false;
+                            document.getElementById("btnFin").scrollIntoView({behavior: "smooth"});
+                            document.getElementById("btnFin").focus();
+                        }
+                    } else {
+                        Swal.fire({
+                            title: "El storage bin no existe",
+                            text: "Verificalo con la mesa de control",
+                            icon: "error"
+                        });
+                    }
+                });
+            }else{
+                document.getElementById('btnFin').disabled = true;
+                Swal.fire({
+                    title: "Debes ingresar un Storage Bin",
+                    text: ":C",
+                    icon: "error"
+                });
+            }
         }
     });
 

@@ -346,7 +346,7 @@ if (strlen($nomina) == 7) {
                         if (bandera!=="0"){
                             document.getElementById('btnFin').disabled = false;
                             document.getElementById("btnFin").scrollIntoView({behavior: "smooth"});
-
+                            //document.getElementById("btnFin").focus();
                             Swal.fire({
                                 title: "¿Deseas guardar la captura? Si es así, presiona 'Enter'.",
                                 showDenyButton: true,
