@@ -11,22 +11,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         foreach ($inputData['parteDatos'] as $registroParte) {
             // Validar y asignar valores
-            $GrammerNo = isset($registroParte['GrammerNo']) ? trim($registroParte['GrammerNo']) : null;
-            $Descripcion = isset($registroParte['Descripcion']) ? trim($registroParte['Descripcion']) : null;
-            $UM = isset($registroParte['UM']) ? trim($registroParte['UM']) : null;
-            $ProfitCtr = isset($registroParte['ProfitCtr']) ? trim($registroParte['ProfitCtr']) : null;
-            $Costo = isset($registroParte['Costo']) ? trim($registroParte['Costo']) : null;
-            $Por = isset($registroParte['Por']) ? trim($registroParte['Por']) : null;
+            $Nomina = isset($registroParte['Nomina']) ? trim($registroParte['Nomina']) : null;
+            $Nombre = isset($registroParte['Nombre']) ? trim($registroParte['Nombre']) : null;
+            $Usuario = isset($registroParte['Usuario']) ? trim($registroParte['Usuario']) : null;
+            $Password = isset($registroParte['Password']) ? trim($registroParte['Password']) : null;
+            $Rol = isset($registroParte['Rol']) ? trim($registroParte['Rol']) : null;
+            $Area = isset($registroParte['Area']) ? trim($registroParte['Area']) : null;
+            $Estatus = 1; // Estatus siempre será 1
 
             // Validar que los datos esenciales no sean nulos o vacíos
-            if ($GrammerNo === null || $Descripcion === null || $UM === null || $ProfitCtr === null || $Costo === null || $Por === null) {
-                $errores[] = "Faltan datos para el registro GrammerNo: $GrammerNo, Descripcion: $Descripcion, UM: $UM, ProfitCtr: $ProfitCtr, Costo: $Costo, Por: $Por ";
+            if ($Nomina === null || $Nombre === null || $Usuario === null || $Password === null || $Rol === null || $Area === null) {
+                $errores[] = "Faltan datos para el registro Nomina: $Nomina, Nombre: $Nombre, Usuario: $Usuario, Password: $Password, Rol: $Rol, Area: $Area ";
                 $todosExitosos = false;
             } else {
                 // Llamar a la función de inserción
-                $respuestaInsert = insertarRegistrosParte($GrammerNo, $Descripcion, $UM, $ProfitCtr, $Costo, $Por);
+                $respuestaInsert = insertarRegistrosUsuario($Nomina, $Nombre, $Usuario, $Password, $Rol, $Estatus, $Area);
                 if ($respuestaInsert['status'] !== 'success') {
-                    $errores[] = "Error al insertar el registro ID: $GrammerNo. " . $respuestaInsert['message'];
+                    $errores[] = "Error al insertar el registro ID: $Nomina. " . $respuestaInsert['message'];
                     $todosExitosos = false;
                     break;  // Salir del ciclo si ocurre un error
                 }
@@ -35,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Respuesta final si todos fueron exitosos
         if ($todosExitosos) {
-            $respuesta = array("status" => 'success', "message" => "Todos los registros en la Tabla Parte fueron actualizados correctamente.");
+            $respuesta = array("status" => 'success', "message" => "Todos los registros en la Tabla Usuarios fueron insertados correctamente.");
         } else {
             $respuesta = array("status" => 'error', "message" => "Se encontraron errores al insertar los registros.", "detalles" => $errores);
         }
@@ -49,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 echo json_encode($respuesta);
 
 
-function insertarRegistrosParte($GrammerNo, $Descripcion, $UM, $ProfitCtr, $Costo, $Por) {
+function insertarRegistrosUsuario($Nomina, $Nombre, $Usuario, $Password, $Rol, $Estatus, $Area) {
     $con = new LocalConector();
     $conex = $con->conectar();
 
@@ -57,48 +58,25 @@ function insertarRegistrosParte($GrammerNo, $Descripcion, $UM, $ProfitCtr, $Cost
     $conex->begin_transaction();
 
     try {
-        // Consultar si el registro ya existe
-        $consultaExistente = $conex->prepare("SELECT * FROM `Parte` WHERE `GrammerNo` = ?");
-        $consultaExistente->bind_param("s", $GrammerNo);
-        $consultaExistente->execute();
-        $consultaExistente->store_result();
+        // Encriptar la contraseña
+        $PasswordEncriptada = password_hash($Password, PASSWORD_DEFAULT);
 
-        if ($consultaExistente->num_rows > 0) {
-            // Si ya existe, se actualiza el registro
-            $updateParte = $conex->prepare("UPDATE `Parte` SET `Descripcion` = ?, `UM` = ?, `ProfitCtr` = ?, `Costo` = ?, `Por` = ? WHERE `GrammerNo` = ?");
-            $updateParte->bind_param("ssssis", $Descripcion, $UM, $ProfitCtr, $Costo, $Por, $GrammerNo);
-            $resultado = $updateParte->execute();
+        // Insertar el nuevo registro
+        $insertUsuario = $conex->prepare("INSERT INTO `Usuarios` (`Nomina`, `Nombre`, `User`, `Password`, `Rol`, `Estatus`, `Area`) 
+                                          VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $insertUsuario->bind_param("sssssis", $Nomina, $Nombre, $Usuario, $PasswordEncriptada, $Rol, $Estatus, $Area);
 
-            if (!$resultado) {
-                $conex->rollback();
-                $respuesta = array('status' => 'error', 'message' => 'Error al actualizar el registro con GrammerNo: ' . $GrammerNo);
-            } else {
-                $conex->commit();
-                $respuesta = array('status' => 'success', 'message' => 'Registro actualizado correctamente.');
-            }
+        $resultado = $insertUsuario->execute();
 
-            $updateParte->close();
-
+        if (!$resultado) {
+            $conex->rollback();
+            $respuesta = array('status' => 'error', 'message' => 'Error en la BD al insertar el registro con Nomina: ' . $Nomina);
         } else {
-            // Si no existe, insertar el nuevo registro
-            $insertParte = $conex->prepare("INSERT INTO `Parte` (`GrammerNo`, `Descripcion`, `UM`, `ProfitCtr`, `Costo`, `Por`) 
-                                            VALUES (?, ?, ?, ?, ?, ?)");
-            $insertParte->bind_param("sssssi", $GrammerNo, $Descripcion, $UM, $ProfitCtr, $Costo, $Por);
-
-            $resultado = $insertParte->execute();
-
-            if (!$resultado) {
-                $conex->rollback();
-                $respuesta = array('status' => 'error', 'message' => 'Error en la BD al insertar el registro con GrammerNo: ' . $GrammerNo);
-            } else {
-                $conex->commit();
-                $respuesta = array('status' => 'success', 'message' => 'Registro insertado correctamente.');
-            }
-
-            $insertParte->close();
+            $conex->commit();
+            $respuesta = array('status' => 'success', 'message' => 'Registro insertado correctamente.');
         }
 
-        $consultaExistente->close();
+        $insertUsuario->close();
 
     } catch (Exception $e) {
         $conex->rollback();

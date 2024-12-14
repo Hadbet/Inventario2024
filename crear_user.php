@@ -26,6 +26,10 @@
                     <div class="card-body">
                         <div class="row">
 
+                            <h2 class="text-center">Actualizar Counted Qty en excel</h2>
+                            <button class="btn btn-success text-right btnExcel" id="btnExcelExcelQty"> Subir Excel</button>
+                            <input type="file" id="fileInputExcelQty" accept=".xlsx, .xls" style="display: none;" />
+
                             <div class="col-md-1">
                                 <div class="form-group mb-3">
                                     <label for="cbCurso">Nomina</label>
@@ -181,8 +185,75 @@
     </div> <!-- .wrapper -->
 
     <?php include 'estaticos/scriptEstandar.php'; ?>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
 
     <script>
+
+
+        document.getElementById('btnExcelExcelQty').addEventListener('click', () => {
+            document.getElementById('fileInputExcelQty').click();
+        });
+
+        document.getElementById('fileInputExcelQty').addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                insertarExcelParte(file);
+            }
+        });
+        async function insertarExcelParte(file) {
+            try {
+                // Leer el archivo Excel
+                const data = await file.arrayBuffer();
+                const workbook = XLSX.read(data, { type: 'array' });
+                const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+                const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+                // Mapear los datos, asegurándonos de convertir las fechas correctamente
+                const parteData = jsonData.slice(1).map((row) => {
+                    return {
+                        Nomina: row[0],
+                        Nombre: row[1],
+                        Usuario: row[2],
+                        Password: row[3],
+                        Rol: row[4],
+                        Area: row[5]
+                    };
+                });
+
+                // Enviar los datos al backend
+                const response = await fetch('daoAdmin/daoInsertarParte.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ parteDatos: parteData })
+                });
+
+                // Obtener la respuesta del backend
+                const result = await response.json();
+
+                if (result.status === "success") {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Actualización exitosa',
+                        text: result.message
+                    });
+                } else {
+                    // Mostrar el mensaje de error que viene del backend
+                    throw new Error(result.message );
+                }
+
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: error.message || 'Ocurrió un error al procesar el archivo. Recargue la página e intente nuevamente.'
+                });
+            }
+        }
+
+
+
               $.ajax({
                 url: 'https://grammermx.com/Logistica/Inventario2024/dao/consultaUser.php', // Reemplaza esto con la URL de tus datos
                 dataType: 'json',
