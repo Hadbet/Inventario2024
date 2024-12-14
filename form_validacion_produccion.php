@@ -204,7 +204,7 @@ if (strlen($nomina) == 7) {
     var auxConteo=0;
     estatusConteo();
     function estatusConteo() {
-        $.getJSON('https://grammermx.com/Logistica/Inventario/dao/consultaAreaDetalle.php?area=<?php echo $area;?>', function (data) {
+        $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaAreaDetalle.php?area=<?php echo $area;?>', function (data) {
             for (var i = 0; i < data.data.length; i++) {
                 auxConteo = data.data[i].Conteo;
 
@@ -235,7 +235,7 @@ if (strlen($nomina) == 7) {
         var marbete = parseInt(document.getElementById("scanner_input").value.split('.')[0], 10);
 
         if (document.getElementById("scanner_input").value.split('.')[1] === auxConteo){
-            $.getJSON('https://grammermx.com/Logistica/Inventario/dao/consultaMarbeteValidacion.php?marbete='+marbete+'&conteo='+auxConteo, function (data) {
+            $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaMarbeteValidacion.php?marbete='+marbete+'&conteo='+auxConteo, function (data) {
                 if (data && data.data && data.data.length > 0) {
                     for (var i = 0; i < data.data.length; i++) {
                         if (data.data[i].FolioMarbete) {
@@ -311,7 +311,7 @@ if (strlen($nomina) == 7) {
 
 
     function cargaPrimer(numeroParte) {
-        $.getJSON('https://grammermx.com/Logistica/Inventario/dao/consultaParte.php?parte='+numeroParte, function (data) {
+        $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaParte.php?parte='+numeroParte, function (data) {
             if (data && data.data && data.data.length > 0) {
                 for (var i = 0; i < data.data.length; i++) {
                     if (data.data[i].GrammerNo) {
@@ -394,7 +394,7 @@ if (strlen($nomina) == 7) {
         formData.append('folioMarbete', marbete);
         formData.append('cantidad', cantidad);
 
-        fetch('https://grammermx.com/Logistica/Inventario/dao/actualizarMarbeteProduccion.php', {
+        fetch('https://grammermx.com/Logistica/Inventario2024/dao/actualizarMarbeteProduccion.php', {
             method: 'POST',
             body: formData
         })

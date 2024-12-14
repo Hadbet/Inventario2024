@@ -274,7 +274,7 @@ if (strlen($nomina) == 7) {
     var auxConteo=0;
     estatusConteo();
     function estatusConteo() {
-        $.getJSON('https://grammermx.com/Logistica/Inventario/dao/consultaAreaDetalle.php?area=<?php echo $area;?>', function (data) {
+        $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaAreaDetalle.php?area=<?php echo $area;?>', function (data) {
             for (var i = 0; i < data.data.length; i++) {
                 auxConteo = data.data[i].Conteo;
                 if (auxConteo==="2"){
@@ -286,7 +286,7 @@ if (strlen($nomina) == 7) {
 
     sum();
     function sum() {
-        $.getJSON('https://grammermx.com/Logistica/Inventario/dao/consultaUltimoSum.php', function (data) {
+        $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaUltimoSum.php', function (data) {
             for (var i = 0; i < data.data.length; i++) {
                 ultimoSum = data.data[i].Id_StorageUnit;
             }
@@ -294,7 +294,7 @@ if (strlen($nomina) == 7) {
     }
 
     function cargarNumeroParte(numeroParteF,storageBinF) {
-        $.getJSON('https://grammermx.com/Logistica/Inventario/dao/consultaParte.php?parte='+numeroParteF, function (data) {
+        $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaParte.php?parte='+numeroParteF, function (data) {
             for (var i = 0; i < data.data.length; i++) {
                 if (data.data[i].GrammerNo) {
 
@@ -326,7 +326,7 @@ if (strlen($nomina) == 7) {
         var marbete = parseInt(document.getElementById("scanner_input").value.split('.')[0], 10)
         var conteoM = document.getElementById("scanner_input").value.split('.')[1];
 
-        $.getJSON('https://grammermx.com/Logistica/Inventario/dao/consultaMarbete.php?marbete='+marbete, function (data) {
+        $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaMarbete.php?marbete='+marbete, function (data) {
             if (data && data.data && data.data.length > 0) {
                 for (var i = 0; i < data.data.length; i++) {
                     if (auxConteo===conteoM && conteoM==="1"){
@@ -416,7 +416,7 @@ if (strlen($nomina) == 7) {
         var conteoM = decodedText.split('.')[1];
         var marbete = parseInt(decodedText.split('.')[0], 10);
 
-        $.getJSON('https://grammermx.com/Logistica/Inventario/dao/consultaMarbete.php?marbete='+marbete, function (data) {
+        $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaMarbete.php?marbete='+marbete, function (data) {
             if (data && data.data && data.data.length > 0) {
                 for (var i = 0; i < data.data.length; i++) {
                     if (auxConteo===conteoM && conteoM==="1"){
@@ -524,7 +524,7 @@ if (strlen($nomina) == 7) {
         var txtStorageUnitValue = document.getElementById("txtStorageUnit").value;
 
         if (txtStorageUnitValue.length === 10 && parseInt(txtStorageUnitValue) < ultimoSum){
-            $.getJSON('https://grammermx.com/Logistica/Inventario/dao/consultaStorageUnit.php?storageUnit='+document.getElementById("txtStorageUnit").value+'&bin='+storageBin+'&conteo='+auxConteo, function (data) {
+            $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaStorageUnit.php?storageUnit='+document.getElementById("txtStorageUnit").value+'&bin='+storageBin+'&conteo='+auxConteo, function (data) {
                 if (data.Estatus) {
                     if (data.Estatus=='No existe el storage unit'){
                         document.getElementById("txtStorageUnitAgregar").value = document.getElementById("txtStorageUnit").value;
@@ -635,8 +635,8 @@ if (strlen($nomina) == 7) {
     function lecturaCorrectaUnit(decodedText, decodedResult) {
 
         if (decodedText.length === 10 && parseInt(decodedText) < ultimoSum){
-            console.log('https://grammermx.com/Logistica/Inventario/dao/consultaStorageUnit.php?storageUnit='+document.getElementById("txtStorageUnit").value+'&bin='+storageBin+'&conteo='+auxConteo);
-            $.getJSON('https://grammermx.com/Logistica/Inventario/dao/consultaStorageUnit.php?storageUnit='+decodedText+'&bin='+storageBin+'&conteo='+auxConteo, function (data) {
+            console.log('https://grammermx.com/Logistica/Inventario2024/dao/consultaStorageUnit.php?storageUnit='+document.getElementById("txtStorageUnit").value+'&bin='+storageBin+'&conteo='+auxConteo);
+            $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaStorageUnit.php?storageUnit='+decodedText+'&bin='+storageBin+'&conteo='+auxConteo, function (data) {
                 if (data.Estatus) {
                     if (data.Estatus=='No existe el storage unit'){
                         document.getElementById("txtStorageUnitAgregar").value = decodedText;
@@ -755,7 +755,7 @@ if (strlen($nomina) == 7) {
         formData.append('storageUnits', JSON.stringify(storageUnits));
         formData.append('folioMarbete', folioMarbete);
 
-        fetch('https://grammermx.com/Logistica/Inventario/dao/guardarMarbete.php', {
+        fetch('https://grammermx.com/Logistica/Inventario2024/dao/guardarMarbete.php', {
             method: 'POST',
             body: formData
         })
@@ -835,7 +835,7 @@ if (strlen($nomina) == 7) {
             formData.append('storageType', storageType);
             formData.append('conteo', auxConteo);
 
-            fetch('https://grammermx.com/Logistica/Inventario/dao/guardarStorageUnit.php', {
+            fetch('https://grammermx.com/Logistica/Inventario2024/dao/guardarStorageUnit.php', {
                 method: 'POST',
                 body: formData
             })

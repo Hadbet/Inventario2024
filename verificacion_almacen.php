@@ -218,7 +218,7 @@ if (strlen($nomina) == 7) {
             table.deleteRow(1);
         }
 
-        $.getJSON('https://grammermx.com/Logistica/Inventario/dao/consultaVerificacion.php?marbete='+document.getElementById("txtBuscar").value, function (data) {
+        $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaVerificacion.php?marbete='+document.getElementById("txtBuscar").value, function (data) {
             if (data && data.data && data.data.length > 0) {
                 for (var i = 0; i < data.data.length; i++) {
                     var row = table.insertRow(-1);
@@ -277,7 +277,7 @@ if (strlen($nomina) == 7) {
 
     function verificacionRegistroTotal() {
 
-        $.getJSON('https://grammermx.com/Logistica/Inventario/dao/consultaVerificacionProduccion.php?marbete='+document.getElementById("txtBuscar").value+'&area='+<?php echo $area;?>, function (data) {
+        $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaVerificacionProduccion.php?marbete='+document.getElementById("txtBuscar").value+'&area='+<?php echo $area;?>, function (data) {
 
             if (data && data.data && data.data.length > 0){
 
@@ -321,7 +321,7 @@ if (strlen($nomina) == 7) {
     }
 
     function cargaPrimer(numeroParte) {
-        $.getJSON('https://grammermx.com/Logistica/Inventario/dao/consultaParte.php?parte='+numeroParte, function (data) {
+        $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaParte.php?parte='+numeroParte, function (data) {
             for (var i = 0; i < data.data.length; i++) {
                 if (data.data[i].GrammerNo) {
                     document.getElementById('lblDescripcion').innerText = data.data[i].Descripcion;
@@ -385,7 +385,7 @@ if (strlen($nomina) == 7) {
         formData.append('folioMarbete', marbete);
         formData.append('cantidad', cantidad);
 
-        fetch('https://grammermx.com/Logistica/Inventario/dao/actualizarMarbeteProduccion.php', {
+        fetch('https://grammermx.com/Logistica/Inventario2024/dao/actualizarMarbeteProduccion.php', {
             method: 'POST',
             body: formData
         })
@@ -405,7 +405,7 @@ if (strlen($nomina) == 7) {
         formData.append('nombre', '<?php echo $nomina;?>-<?php echo $nombre;?>');
         formData.append('folioMarbete', marbete);
 
-        fetch('https://grammermx.com/Logistica/Inventario/dao/mandarSegundos.php', {
+        fetch('https://grammermx.com/Logistica/Inventario2024/dao/mandarSegundos.php', {
             method: 'POST',
             body: formData
         })

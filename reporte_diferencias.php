@@ -147,7 +147,7 @@ if (strlen($nomina) == 7) {
 
     function verificacionDiferencia() {
 
-        $.getJSON('https://grammermx.com/Logistica/Inventario/dao/consultaSegundosConteosCostoAdmin.php', function (data) {
+        $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaSegundosConteosCostoAdmin.php', function (data) {
 
             if (data && data.data && data.data.length > 0) {
                 for (var i = 0; i < data.data.length; i++) {
@@ -167,7 +167,7 @@ if (strlen($nomina) == 7) {
 
     function crearTabla() {
         $.ajax({
-            url: 'https://grammermx.com/Logistica/Inventario/dao/consultaSegundosConteosAdmin.php', // Reemplaza esto con la URL de tus datos
+            url: 'https://grammermx.com/Logistica/Inventario2024/dao/consultaSegundosConteosAdmin.php', // Reemplaza esto con la URL de tus datos
             dataType: 'json',
             success: function(data) {
                 var table = $('#dataTable-1').DataTable({

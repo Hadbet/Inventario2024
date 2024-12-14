@@ -99,7 +99,7 @@
 
     <script>
               $.ajax({
-                url: 'https://grammermx.com/Logistica/Inventario/dao/consultaCapturista.php', // Reemplaza esto con la URL de tus datos
+                url: 'https://grammermx.com/Logistica/Inventario2024/dao/consultaCapturista.php', // Reemplaza esto con la URL de tus datos
                 dataType: 'json',
                 success: function(data) {
                   $('#dataTable-1').DataTable({
@@ -146,7 +146,7 @@
               table.deleteRow(1);
           }
 
-          $.getJSON('https://grammermx.com/Logistica/Inventario/dao/consultaDetalles.php?marbete='+folio, function (data) {
+          $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaDetalles.php?marbete='+folio, function (data) {
               for (var i = 0; i < data.data.length; i++) {
                   var row = table.insertRow(-1);
                   var cell1 = row.insertCell(0);

@@ -203,7 +203,7 @@ if (strlen($nomina) == 7) {
     var auxStorage=0;
     estatusConteo();
     function estatusConteo() {
-        $.getJSON('https://grammermx.com/Logistica/Inventario/dao/consultaAreaDetalle.php?area=<?php echo $area;?>', function (data) {
+        $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaAreaDetalle.php?area=<?php echo $area;?>', function (data) {
             for (var i = 0; i < data.data.length; i++) {
                 auxConteo = data.data[i].Conteo;
                 auxStorage = data.data[i].StBin
@@ -216,7 +216,7 @@ if (strlen($nomina) == 7) {
     var bandera=0;
 
     function cargarNumeroParte(numeroParteF,storageBinF) {
-        $.getJSON('https://grammermx.com/Logistica/Inventario/dao/consultaParte.php?parte='+numeroParteF, function (data) {
+        $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaParte.php?parte='+numeroParteF, function (data) {
             for (var i = 0; i < data.data.length; i++) {
                 if (data.data[i].GrammerNo) {
                     document.getElementById('lblNumeroParte').innerText = data.data[i].GrammerNo;
@@ -309,7 +309,7 @@ if (strlen($nomina) == 7) {
         var marbete = parseInt(document.getElementById("scanner_input").value.split('.')[0], 10);
 
         if (document.getElementById("scanner_input").value.split('.')[1] === auxConteo){
-            $.getJSON('https://grammermx.com/Logistica/Inventario/dao/consultaMarbete.php?marbete='+marbete, function (data) {
+            $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaMarbete.php?marbete='+marbete, function (data) {
                 if (data && data.data && data.data.length > 0) {
                     for (var i = 0; i < data.data.length; i++) {
                         if (data.data[i].FolioMarbete) {
@@ -380,7 +380,7 @@ if (strlen($nomina) == 7) {
         formData.append('cantidad', cantidad);
         formData.append('storageBin', storageBin);
 
-        fetch('https://grammermx.com/Logistica/Inventario/dao/guardarMarbeteProduccion.php', {
+        fetch('https://grammermx.com/Logistica/Inventario2024/dao/guardarMarbeteProduccion.php', {
             method: 'POST',
             body: formData
         })

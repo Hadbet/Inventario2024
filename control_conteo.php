@@ -145,7 +145,7 @@ if (strlen($nomina) == 7) {
 
     estatusConteo();
     function estatusConteo() {
-        $.getJSON('https://grammermx.com/Logistica/Inventario/dao/consultaAreaDetalle.php?area=<?php echo $area;?>', function (data) {
+        $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaAreaDetalle.php?area=<?php echo $area;?>', function (data) {
             for (var i = 0; i < data.data.length; i++) {
                 var auxConteo = data.data[i].Conteo;
 
@@ -158,7 +158,7 @@ if (strlen($nomina) == 7) {
     }
 
     function numerosFaltantes() {
-        $.getJSON('https://grammermx.com/Logistica/Inventario/dao/consultaFaltantes.php?area=<?php echo $area;?>', function (data) {
+        $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaFaltantes.php?area=<?php echo $area;?>', function (data) {
             if (data && data.data && data.data.length > 0) {
                 Swal.fire({
                     title: "Tienes numeros de parte no contados se te descargara un excel con todos",
@@ -197,7 +197,7 @@ if (strlen($nomina) == 7) {
 
     function verificacion() {
 
-        $.getJSON('https://grammermx.com/Logistica/Inventario/dao/consultaSegundosConteosValidacion.php?area='+<?php echo $area;?>, function (data) {
+        $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaSegundosConteosValidacion.php?area='+<?php echo $area;?>, function (data) {
             var marbete='';
             for (var i = 0; i < data.data.length; i++) {
                 marbete+= data.data[i].FolioMarbete+', ';
@@ -216,7 +216,7 @@ if (strlen($nomina) == 7) {
 
     function verificacionDiferencia() {
 
-        $.getJSON('https://grammermx.com/Logistica/Inventario/dao/consultaSegundosConteosCosto.php?area='+<?php echo $area;?>, function (data) {
+        $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaSegundosConteosCosto.php?area='+<?php echo $area;?>, function (data) {
 
             if (data && data.data && data.data.length > 0) {
                 for (var i = 0; i < data.data.length; i++) {
@@ -235,7 +235,7 @@ if (strlen($nomina) == 7) {
 
     function verificacionDiferenciaConteoNp() {
 
-        $.getJSON('https://grammermx.com/Logistica/Inventario/dao/consultaSegundosConteosNumerosParte.php?area='+<?php echo $area;?>, function (data) {
+        $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaSegundosConteosNumerosParte.php?area='+<?php echo $area;?>, function (data) {
 
             if (data && data.data && data.data.length > 0) {
                 for (var i = 0; i < data.data.length; i++) {
@@ -257,7 +257,7 @@ if (strlen($nomina) == 7) {
 
     function crearTabla() {
         $.ajax({
-            url: 'https://grammermx.com/Logistica/Inventario/dao/consultaSegundosConteosUser.php?area='+<?php echo $area;?>, // Reemplaza esto con la URL de tus datos
+            url: 'https://grammermx.com/Logistica/Inventario2024/dao/consultaSegundosConteosUser.php?area='+<?php echo $area;?>, // Reemplaza esto con la URL de tus datos
             dataType: 'json',
             success: function(data) {
                 var table = $('#dataTable-1').DataTable({

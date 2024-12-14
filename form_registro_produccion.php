@@ -217,7 +217,7 @@ if (strlen($nomina) == 7) {
     var auxStorage=0;
     estatusConteo();
     function estatusConteo() {
-        $.getJSON('https://grammermx.com/Logistica/Inventario/dao/consultaAreaDetalle.php?area=<?php echo $area;?>', function (data) {
+        $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaAreaDetalle.php?area=<?php echo $area;?>', function (data) {
             for (var i = 0; i < data.data.length; i++) {
                 auxConteo = data.data[i].Conteo;
                 auxStorage = data.data[i].StBin
@@ -229,7 +229,7 @@ if (strlen($nomina) == 7) {
 
 
     function buscarType() {
-        $.getJSON('https://grammermx.com/Logistica/Inventario/dao/consultaTypes.php?bin=<?php echo $bin;?>', function (data) {
+        $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaTypes.php?bin=<?php echo $bin;?>', function (data) {
             if (data.data.length > 0) {
                 for (var i = 0; i < data.data.length; i++) {
                     typeGlobal=data.data[i].StType;
@@ -241,7 +241,7 @@ if (strlen($nomina) == 7) {
         });
     }
     function validarUbicacion(numeroParteU,descripcionU,umU,costoUnitarioU) {
-        $.getJSON('https://grammermx.com/Logistica/Inventario/dao/consultaUbicacionProduccion.php?numeroParte='+numeroParteU+'&bin=<?php echo $bin;?>', function (data) {
+        $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaUbicacionProduccion.php?numeroParte='+numeroParteU+'&bin=<?php echo $bin;?>', function (data) {
             if (data && data.data && data.data.length > 0) {
                 for (var i = 0; i < data.data.length; i++) {
                     if (data.data[i].PVB === '<?php echo $bin;?>') {
@@ -295,7 +295,7 @@ if (strlen($nomina) == 7) {
         var inputValue = this.value;
         document.getElementById('lblNumeroParte').textContent = inputValue;
         if (event.key === 'Enter' || event.keyCode === 13) {
-            $.getJSON('https://grammermx.com/Logistica/Inventario/dao/consultaParte.php?parte='+this.value, function (data) {
+            $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaParte.php?parte='+this.value, function (data) {
                 if (data && data.data && data.data.length > 0) {
                     for (var i = 0; i < data.data.length; i++) {
                         if (data.data[i].GrammerNo) {
@@ -435,7 +435,7 @@ if (strlen($nomina) == 7) {
         var marbete = parseInt(document.getElementById("scanner_input").value.split('.')[0], 10);
 
         if (document.getElementById("scanner_input").value.split('.')[1] === auxConteo){
-            $.getJSON('https://grammermx.com/Logistica/Inventario/dao/consultaMarbete.php?marbete='+marbete, function (data) {
+            $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaMarbete.php?marbete='+marbete, function (data) {
                 if (data && data.data && data.data.length > 0) {
                     for (var i = 0; i < data.data.length; i++) {
                         if (data.data[i].FolioMarbete) {
@@ -508,7 +508,7 @@ if (strlen($nomina) == 7) {
         formData.append('storageBin', storageBin);
         formData.append('storageType', typeGlobal);
 
-        fetch('https://grammermx.com/Logistica/Inventario/dao/guardarMarbeteProduccion.php', {
+        fetch('https://grammermx.com/Logistica/Inventario2024/dao/guardarMarbeteProduccion.php', {
             method: 'POST',
             body: formData
         })

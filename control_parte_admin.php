@@ -165,7 +165,7 @@ if (strlen($nomina) == 7) {
 
     <script>
               $.ajax({
-                url: 'https://grammermx.com/Logistica/Inventario/dao/consultaParteAdmin.php', // Reemplaza esto con la URL de tus datos
+                url: 'https://grammermx.com/Logistica/Inventario2024/dao/consultaParteAdmin.php', // Reemplaza esto con la URL de tus datos
                 dataType: 'json',
                 success: function(data) {
                   $('#dataTable-1').DataTable({
@@ -203,7 +203,7 @@ if (strlen($nomina) == 7) {
 
       function actualizarTabla() {
           $.ajax({
-              url: 'https://grammermx.com/Logistica/Inventario/dao/consultaParteAdmin.php', // Reemplaza esto con la URL de tus datos
+              url: 'https://grammermx.com/Logistica/Inventario2024/dao/consultaParteAdmin.php', // Reemplaza esto con la URL de tus datos
               dataType: 'json',
               success: function(data) {
                   var table = $('#dataTable-1').DataTable();
@@ -231,7 +231,7 @@ if (strlen($nomina) == 7) {
           formData.append('por', por);
           formData.append('tipo', tipo);
 
-          fetch('https://grammermx.com/Logistica/Inventario/dao/guardarParte.php', {
+          fetch('https://grammermx.com/Logistica/Inventario2024/dao/guardarParte.php', {
               method: 'POST',
               body: formData
           })

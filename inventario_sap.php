@@ -104,7 +104,7 @@ if (strlen($nomina) == 7) {
     crearTabla();
     function crearTabla() {
         $.ajax({
-            url: 'https://grammermx.com/Logistica/Inventario/dao/consultaInventarioSap.php', // Reemplaza esto con la URL de tus datos
+            url: 'https://grammermx.com/Logistica/Inventario2024/dao/consultaInventarioSap.php', // Reemplaza esto con la URL de tus datos
             dataType: 'json',
             success: function(data) {
                 var table = $('#dataTable-1').DataTable({

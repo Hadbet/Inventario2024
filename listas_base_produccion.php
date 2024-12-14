@@ -97,7 +97,7 @@ $nombre =$_SESSION['nombre'];
 
 <script>
     $.ajax({
-        url: 'https://grammermx.com/Logistica/Inventario/dao/consultaLideres.php?area=<?php echo $area;?>', // Reemplaza esto con la URL de tus datos
+        url: 'https://grammermx.com/Logistica/Inventario2024/dao/consultaLideres.php?area=<?php echo $area;?>', // Reemplaza esto con la URL de tus datos
         dataType: 'json',
         success: function(data) {
             var table = $('#dataTable-1').DataTable({
