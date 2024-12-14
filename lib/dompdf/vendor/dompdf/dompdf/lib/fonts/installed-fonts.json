@@ -1,0 +1,15 @@
+{
+    "line awesome brands": {
+        "normal": "line_awesome_brands_normal_f905f0dcb962dd842eea02bb4f9eee69"
+    },
+    "line awesome free": {
+        "normal": "\/home\/u543707098\/domains\/arketipo.mx\/public_html\/Produccion\/ML\/PW_MetrologyLaboratory\/librerias\/dompdf\/vendor\/dompdf\/dompdf\/lib\/fonts\/line_awesome_free_normal_967a0922d505961af7c5cdf6c50fd81e",
+        "900": "line_awesome_free_900_03518a78e82e89adf0bdd3560d8fbb29"
+    },
+    "assistant": {
+        "300": "\/home\/u543707098\/domains\/arketipo.mx\/public_html\/Produccion\/ML\/PW_MetrologyLaboratory\/librerias\/dompdf\/vendor\/dompdf\/dompdf\/lib\/fonts\/assistant_300_499f9adcfc8a558e07b1c069cbb099de",
+        "normal": "\/home\/u543707098\/domains\/arketipo.mx\/public_html\/Produccion\/ML\/PW_MetrologyLaboratory\/librerias\/dompdf\/vendor\/dompdf\/dompdf\/lib\/fonts\/assistant_normal_55421334b10e91c6fe982953fa21552f",
+        "500": "\/home\/u543707098\/domains\/arketipo.mx\/public_html\/Produccion\/ML\/PW_MetrologyLaboratory\/librerias\/dompdf\/vendor\/dompdf\/dompdf\/lib\/fonts\/assistant_500_ddb1a27253e48da69def34cc8d372789",
+        "bold": "assistant_bold_afc81992d73a108982c741eaeb7e664a"
+    }
+}

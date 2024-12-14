@@ -1,0 +1,61 @@
+.image-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.image-container img {
+    transition: all 0.3s ease;
+    width: 100px;
+    height: 100px;
+}
+
+.image-container img:hover {
+    transform: translateY(-10px);
+}
+
+.image-container img.active {
+    transform: scale(1.2);
+}
+
+.image-container img.inactive {
+    transform: scale(0.8);
+}
+
+#divCurso {
+    opacity: 0;
+    transition: opacity 2s;
+}
+
+.image-zoom {
+    transform: scale(1.1);
+    transition: transform .2s; /* Animación */
+}
+
+#dataTable-1 tfoot input {
+    width: 100%;
+    box-sizing: border-box;
+}
+.copyButton {
+    color: white;
+    background-color: blue !important;
+}
+
+.csvButton {
+    color: white;
+    background-color: forestgreen !important; /* Reemplaza 'strongGreen' con el color verde fuerte que quieras */
+}
+
+.excelButton {
+    color: white;
+    background-color: green !important;
+}
+
+.pdfButton {
+    color: white;
+    background-color: red !important;
+}
+
+.printButton {
+    color: white;
+    background-color: gray !important;
+}

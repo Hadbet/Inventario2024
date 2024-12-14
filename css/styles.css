@@ -1,0 +1,52 @@
+/*Colores tooltip*/
+.tippy-box[data-theme~='light'] {
+    background-color: #f1f4f9;
+    color: navy;
+}
+
+/*arrow*/
+/* The border */
+.tippy-box[data-theme~='light'] > .tippy-svg-arrow > svg:first-child {
+    fill: #f1f4f9;
+}
+
+/* The fill */
+.tippy-box[data-theme~='light'] > .tippy-svg-arrow > svg:last-child {
+    fill: #f1f4f9;
+}
+
+h2{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 30px;
+    letter-spacing: 0.5px;
+    word-spacing: 0px;
+    color: #062863;
+    font-weight: bold;
+    text-decoration: none;
+    font-style: normal;
+    font-variant: normal;
+    text-transform: uppercase;
+}
+
+/* Estilos para el encabezado de la tabla */
+thead {
+    background-color: #062863 !important; /* Color oscuro para un look moderno */
+
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+thead th {
+    padding: 12px 15px;
+    text-align: left; /* Alineación a la izquierda para claridad */
+    border-bottom: 2px solid #0d1025; /* Línea sutil debajo del encabezado */
+}
+
+/* Estilo para los encabezados cuando se aplica scroll */
+thead th {
+    position: sticky;
+    top: 0;
+    background-color: #404f90; /* Mantén el fondo oscuro */
+    z-index: 1; /* Mantén los encabezados encima del contenido al hacer scroll */
+}
