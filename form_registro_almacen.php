@@ -77,12 +77,6 @@ if (strlen($nomina) == 7) {
                                         <br>
                                     </div>
                                 </div> <!-- /.col -->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <br>
-                                        <button class="btn btn-success text-white mt-2" onclick="escaneo()">Escanear</button>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         <div class="card-footer">
