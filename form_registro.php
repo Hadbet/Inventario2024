@@ -136,6 +136,7 @@ if (strlen($nomina) == 7) {
                                         </div>
                                     </div>
                                 </div>
+                                <label for="">Total contado : <span id="lblTotalContado"></span></label>
                                 <table id="data-table" class="table table-hover">
                                     <thead>
                                     <tr>
@@ -270,6 +271,7 @@ if (strlen($nomina) == 7) {
     var numeroParteUnit;
     var cantidad;
     var ultimoSum = 0;
+    var totalContado = 0;
 
     var auxConteo=0;
     estatusConteo();
@@ -568,6 +570,9 @@ if (strlen($nomina) == 7) {
                                 cell2.innerHTML = numeroParteUnit;
                                 cell3.innerHTML = cantidad;
 
+                                totalContado += cantidad;
+                                document.getElementById("lblTotalContado").innerText=totalContado;
+
                                 Swal.fire({
                                     title: "Storage unit escaneado",
                                     text: "Unit : " + data.data[i].Id_StorageUnit,
@@ -681,6 +686,10 @@ if (strlen($nomina) == 7) {
                                 cell1.innerHTML = data.data[i].Id_StorageUnit;
                                 cell2.innerHTML = numeroParteUnit;
                                 cell3.innerHTML = cantidad;
+
+
+                                totalContado += cantidad;
+                                document.getElementById("lblTotalContado").innerText=totalContado;
 
                                 let timerInterval;
                                 Swal.fire({
@@ -823,6 +832,10 @@ if (strlen($nomina) == 7) {
             cell1.innerHTML = unit;
             cell2.innerHTML = numeroParte;
             cell3.innerHTML = cantidad;
+
+
+            totalContado += cantidad;
+            document.getElementById("lblTotalContado").innerText=totalContado;
 
             var storageUnits = addedStorageUnits;
             console.log(storageUnits);
@@ -980,6 +993,10 @@ if (strlen($nomina) == 7) {
             cell1.innerHTML = storageA;
             cell2.innerHTML = numeroParteA;
             cell3.innerHTML = cantidadA;
+
+
+        totalContado += parseFloat(cantidadA);
+        document.getElementById("lblTotalContado").innerText=totalContado;
 
             document.getElementById("btnCerrarModal").click();
 
