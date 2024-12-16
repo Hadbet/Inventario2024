@@ -136,7 +136,7 @@ if (strlen($nomina) == 7) {
                                         </div>
                                     </div>
                                 </div>
-                                <label for="">Total contado : <span id="lblTotalContado"></span></label>
+                                <label for=""  class="card-title h4">Total contado : <strong id="lblTotalContado" class="card-title h4"></strong></label>
                                 <table id="data-table" class="table table-hover">
                                     <thead>
                                     <tr>
