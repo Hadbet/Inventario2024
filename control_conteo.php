@@ -277,7 +277,7 @@ if (strlen($nomina) == 7) {
 
     function crearTabla() {
         $.ajax({
-            url: 'https://grammermx.com/Logistica/Inventario2024/dao/consultaSegundosConteosUser.php?area='+<?php echo $area;?>, // Reemplaza esto con la URL de tus datos
+            url: 'https://grammermx.com/Logistica/Inventario2024/dao/consultaSegundosConteosUser.php?area='+<?php echo $area;?>,
             dataType: 'json',
             success: function(data) {
                 var table = $('#dataTable-1').DataTable({
@@ -329,6 +329,9 @@ if (strlen($nomina) == 7) {
                         });
                     }
                 });
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log(textStatus, errorThrown);
             }
         });
     }
