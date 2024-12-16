@@ -384,6 +384,12 @@ if (strlen($nomina) == 7) {
 
       }
 
+      document.getElementById('txtPvbU').addEventListener('keyup', function(event) {
+          if (event.key === 'Enter' || event.keyCode === 13) {
+              enviarDatosP(1);
+          }
+      });
+
     </script>
   </body>
 </html>
