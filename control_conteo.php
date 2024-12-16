@@ -239,6 +239,7 @@ if (strlen($nomina) == 7) {
 
             if (data && data.data && data.data.length > 0) {
                 for (var i = 0; i < data.data.length; i++) {
+                    document.getElementById("lblCantidad").innerText = data.data[i].CantidadDiferencias;
                     verificacionConteos();
                 }
             }else{
@@ -257,7 +258,6 @@ if (strlen($nomina) == 7) {
 
             if (data && data.data && data.data.length > 0) {
                 for (var i = 0; i < data.data.length; i++) {
-                    document.getElementById("lblCantidad").innerText = data.data[i].CantidadDiferencias;
 
                     crearTabla();
                 }
