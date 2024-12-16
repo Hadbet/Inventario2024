@@ -909,7 +909,6 @@ if (strlen($nomina) == 7) {
                         numeroParteUnit=data.data[i].Numero_Parte;
                         if (numeroParteUnit===numeroParte){
                             document.getElementById("txtStorageUnitA").value = decodedText;
-                            document.getElementById("txtNumeroParteA").value = numeroParteUnit;
                             html5QrcodeScannerUnitA.clear();
                             html5QrcodeScannerUnitA.pause();
                             document.getElementById("readerAbierto").style.display = 'none';
@@ -1001,7 +1000,6 @@ if (strlen($nomina) == 7) {
             document.getElementById("btnCerrarModal").click();
 
             document.getElementById("txtStorageUnitA").value = "";
-            document.getElementById("txtNumeroParteA").value = "";
             document.getElementById("txtCantidadA").value = "";
 
             Swal.fire({
