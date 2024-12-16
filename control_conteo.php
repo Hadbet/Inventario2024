@@ -239,7 +239,26 @@ if (strlen($nomina) == 7) {
 
             if (data && data.data && data.data.length > 0) {
                 for (var i = 0; i < data.data.length; i++) {
+                    verificacionConteos();
+                }
+            }else{
+                Swal.fire({
+                    title: "Tu conteo esta bien",
+                    text: "No necesitas ir a segundos conteos",
+                    icon: "success"
+                });
+            }
+        });
+    }
+
+    function verificacionConteos() {
+
+        $.getJSON('https://grammermx.com/Logistica/Inventario/dao/consultaSegundosConteos.php?area='+<?php echo $area;?>, function (data) {
+
+            if (data && data.data && data.data.length > 0) {
+                for (var i = 0; i < data.data.length; i++) {
                     document.getElementById("lblCantidad").innerText = data.data[i].CantidadDiferencias;
+
                     crearTabla();
                 }
             }else{
@@ -251,6 +270,7 @@ if (strlen($nomina) == 7) {
             }
         });
     }
+
 
 
 
