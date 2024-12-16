@@ -570,7 +570,7 @@ if (strlen($nomina) == 7) {
                                 cell2.innerHTML = numeroParteUnit;
                                 cell3.innerHTML = cantidad;
 
-                                totalContado += cantidad;
+                                totalContado += parseFloat(cantidad);
                                 document.getElementById("lblTotalContado").innerText=totalContado;
 
                                 Swal.fire({
@@ -688,7 +688,7 @@ if (strlen($nomina) == 7) {
                                 cell3.innerHTML = cantidad;
 
 
-                                totalContado += cantidad;
+                                totalContado += parseFloat(cantidad);
                                 document.getElementById("lblTotalContado").innerText=totalContado;
 
                                 let timerInterval;
@@ -834,7 +834,7 @@ if (strlen($nomina) == 7) {
             cell3.innerHTML = cantidad;
 
 
-            totalContado += cantidad;
+            totalContado += parseFloat(cantidad);
             document.getElementById("lblTotalContado").innerText=totalContado;
 
             var storageUnits = addedStorageUnits;
