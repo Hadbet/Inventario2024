@@ -314,7 +314,20 @@ if (strlen($nomina) == 7) {
                             extend: 'print',
                             className: 'btn btn-sm printButton'
                         }
-                    ]
+                    ],
+                    initComplete: function () {
+                        this.api().columns().every( function () {
+                            var column = this;
+                            var input = document.createElement("input");
+                            input.className = 'form-control form-control-sm';
+                            $(input).appendTo($(column.footer()).empty())
+                                .on('keyup change clear', function () {
+                                    if (column.search() !== this.value) {
+                                        column.search(this.value).draw();
+                                    }
+                                });
+                        });
+                    }
                 });
             }
         });
