@@ -160,37 +160,46 @@ if (strlen($nomina) == 7) {
     function numerosFaltantes() {
         $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaFaltantes.php?area=<?php echo $area;?>', function (data) {
             if (data && data.data && data.data.length > 0) {
-                Swal.fire({
-                    title: "Tienes numeros de parte no contados se te descargara un excel con todos",
-                    text: "Verificalo con tu equipo",
-                    icon: "error"
+                var allGrammerNoAreNA = data.data.every(function(item) {
+                    return item.GrammerNo === 'NA';
                 });
-                var wb = XLSX.utils.book_new();
-                wb.Props = {
-                    Title: "SheetJS",
-                    Subject: "Numeros de parte faltantes",
-                    Author: "Red Stapler",
-                    CreatedDate: new Date(2017,12,19)
-                };
-                wb.SheetNames.push("Test Sheet");
-                var ws_data = [];
-                for (var i = 0; i < data.data.length; i++) {
-                    var grammerNo = data.data[i].GrammerNo;
-                    var descripcion = data.data[i].Descripcion;
-                    ws_data.push([grammerNo,descripcion]);
+
+                if (allGrammerNoAreNA) {
+                    verificacion();
+                } else {
+                    // Aquí va el código que se ejecuta si no todos los GrammerNo son 'NA'
+                    Swal.fire({
+                        title: "Tienes numeros de parte no contados se te descargara un excel con todos",
+                        text: "Verificalo con tu equipo",
+                        icon: "error"
+                    });
+                    var wb = XLSX.utils.book_new();
+                    wb.Props = {
+                        Title: "SheetJS",
+                        Subject: "Numeros de parte faltantes",
+                        Author: "Red Stapler",
+                        CreatedDate: new Date(2017,12,19)
+                    };
+                    wb.SheetNames.push("Test Sheet");
+                    var ws_data = [];
+                    for (var i = 0; i < data.data.length; i++) {
+                        var grammerNo = data.data[i].GrammerNo;
+                        var descripcion = data.data[i].Descripcion;
+                        ws_data.push([grammerNo,descripcion]);
+                    }
+                    var ws = XLSX.utils.aoa_to_sheet(ws_data);
+                    wb.Sheets["Test Sheet"] = ws;
+                    var wbout = XLSX.write(wb, {bookType:'xlsx',  type: 'binary'});
+                    function s2ab(s) {
+                        var buf = new ArrayBuffer(s.length);
+                        var view = new Uint8Array(buf);
+                        for (var i=0; i<s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+                        return buf;
+                    }
+                    saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), 'Numeros de parte faltantes.xlsx');
                 }
-                var ws = XLSX.utils.aoa_to_sheet(ws_data);
-                wb.Sheets["Test Sheet"] = ws;
-                var wbout = XLSX.write(wb, {bookType:'xlsx',  type: 'binary'});
-                function s2ab(s) {
-                    var buf = new ArrayBuffer(s.length);
-                    var view = new Uint8Array(buf);
-                    for (var i=0; i<s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
-                    return buf;
-                }
-                saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), 'Numeros de parte faltantes.xlsx');
             } else {
-                verificacion()
+                verificacion();
             }
         });
     }
