@@ -276,6 +276,10 @@ if (strlen($nomina) == 7) {
 
 
     function crearTabla() {
+        if ($.fn.DataTable.isDataTable('#dataTable-1')) {
+            $('#dataTable-1').DataTable().destroy();
+        }
+
         $.ajax({
             url: 'https://grammermx.com/Logistica/Inventario2024/dao/consultaSegundosConteosUser.php?area='+<?php echo $area;?>,
             dataType: 'json',
