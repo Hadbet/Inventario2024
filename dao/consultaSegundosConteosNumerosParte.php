@@ -15,7 +15,7 @@ function ContadorApu($area)
     $datos = mysqli_query($conex, "SELECT COUNT(*) AS CantidadDiferencias FROM InventarioSap AS InvSap 
     INNER JOIN Bitacora_Inventario AS BI ON InvSap.GrammerNo = BI.NumeroParte 
     INNER JOIN Parte P ON InvSap.GrammerNo = P.GrammerNo 
-    WHERE (ABS((P.Costo / P.Por) * InvSap.Cantidad - (P.Costo / P.Por) * BI.PrimerConteo) > 3000 OR ABS(InvSap.Cantidad - BI.PrimerConteo) > 10) AND InvSap.AreaCve = 299;");
+    WHERE (ABS((P.Costo / P.Por) * InvSap.Cantidad - (P.Costo / P.Por) * BI.PrimerConteo) > 3000 OR ABS(InvSap.Cantidad - BI.PrimerConteo) > 10) AND InvSap.AreaCve = $area;");
     $resultado = mysqli_fetch_all($datos, MYSQLI_ASSOC);
     echo json_encode(array("data" => $resultado));
 }

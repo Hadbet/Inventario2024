@@ -51,7 +51,30 @@
                         </div> <!-- .card -->
                     </div>
 
+                    <div class="mb-2 align-items-center">
+                        <div class="card shadow mb-4">
+                            <div class="card-body">
 
+                                <div class="col-md-2" >
+                                    <div class="form-group mb-3">
+                                        <label for="cbArea">Área</label>
+                                        <select class="custom-select" id="cbArea" onchange="graficaCostoCarga()">
+                                            <option selected value="all">Todas</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-1 align-items-center">
+                                    <div class="col-12 col-lg-4 text-left pl-4">
+                                        <span class="h3">Proceso del Inventario en dinero</span>
+                                    </div>
+                                </div>
+                                <div class="map-box">
+                                    <div id="areaChartCuatro"></div>
+                                </div>
+                            </div> <!-- .card-body -->
+                        </div> <!-- .card -->
+                    </div>
 
                 </div> <!-- .col-12 -->
             </div> <!-- .row -->
@@ -113,6 +136,92 @@
     }
 
     var chartDos;
+    graficaCostoCarga();
+    function graficaCostoCarga() {
+        $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/graficaCosto.php?area='+document.getElementById("cbArea").value, function (data) {
+            var AreaNombreCosto = [];
+            var PrimerConteoCosto = [];
+            var SegundoConteoCosto = [];
+
+            for (var i = 0; i < data.data.length; i++) {
+                var totalContado = data.data[i].TotalContado ? parseFloat(data.data[i].TotalContado).toFixed(2) : '0.00';
+                var totalEsperado = data.data[i].TotalEsperado ? parseFloat(data.data[i].TotalEsperado).toFixed(2) : '0.00';
+                AreaNombreCosto.push((data.data[i].AreaNombre ? data.data[i].AreaNombre : '') + "(" + totalContado + "/" + totalEsperado + ")");
+                PrimerConteoCosto.push(totalContado);
+                SegundoConteoCosto.push(totalEsperado);
+            }
+            graficaCosto(AreaNombreCosto,PrimerConteoCosto,SegundoConteoCosto);
+        });
+    }
+
+    function graficaCosto(AreaNombreCosto,PrimerConteoCosto,SegundoConteoCosto) {
+        var options = {
+            series: [{
+                name: 'Monto actual',
+                type: 'column',
+                data: PrimerConteoCosto
+            }, {
+                name: 'Monto Estimado',
+                type: 'column',
+                data: SegundoConteoCosto
+            }],
+            chart: {
+                height: 700,
+                stacked: false,
+            },
+            stroke: {
+                width: [0, 2, 5],
+                curve: 'smooth'
+            },
+            plotOptions: {
+                bar: {
+                    columnWidth: '50%'
+                }
+            },
+            fill: {
+                opacity: [0.85, 0.85, 1],
+                gradient: {
+                    inverseColors: false,
+                    shade: 'light',
+                    type: "vertical",
+                    opacityFrom: 0.85,
+                    opacityTo: 0.55,
+                    stops: [0, 100, 100, 100]
+                }
+            },
+            labels: AreaNombreCosto,
+            markers: {
+                size: 0
+            },
+            xaxis: {
+                type: 'category'
+            },
+            yaxis: {
+                title: {
+                    text: 'Proceso',
+                }
+            },
+            tooltip: {
+                shared: true,
+                intersect: false,
+                y: {
+                    formatter: function (y) {
+                        if (typeof y !== "undefined") {
+                            return  "$ "+y.toFixed(2);
+                        }
+                        return y;
+                    }
+                }
+            }
+        };
+
+        if(chartDos) {
+            chartDos.destroy(); // Destruye el gráfico anterior si existe
+        }
+
+        chartDos = new ApexCharts(document.querySelector("#areaChartCuatro"), options);
+        chartDos.render();
+    }
 
 
 

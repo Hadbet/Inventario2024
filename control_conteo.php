@@ -259,8 +259,9 @@ if (strlen($nomina) == 7) {
             if (data && data.data && data.data.length > 0) {
                 for (var i = 0; i < data.data.length; i++) {
 
-                    crearTabla();
+
                 }
+                crearTabla();
             }else{
                 Swal.fire({
                     title: "Tu conteo esta bien",
