@@ -24,7 +24,7 @@ function ContadorApu()
     COUNT(CASE WHEN BI.`SegFolio` IS NOT NULL THEN 1 END) AS 'TotalSegundoConteo',
     COUNT(CASE WHEN BI.`TercerConteo` IS NOT NULL THEN 1 END) AS 'TotalTercerConteo',
     (COUNT(CASE WHEN BI.`Estatus` = 1 THEN 1 END) / COUNT(CASE WHEN BI.`Estatus` IN (0, 1,2) THEN 1 END)) * 100 AS 'PorcentajePrimerConteo',
-    (COUNT(CASE WHEN BI.`SegFolio` = 1 THEN 1 END) / COUNT(CASE WHEN BI.`SegFolio` IS NOT NULL THEN 1 END)) * 100 AS 'PorcentajeSegundoConteo',
+    (COUNT(CASE WHEN BI.`SegFolio` = 1 THEN 1 END) / (COUNT(CASE WHEN BI.`SegFolio` = 1 THEN 1 END) + COUNT(CASE WHEN BI.`SegFolio` = 2 THEN 1 END))) * 100 AS 'PorcentajeSegundoConteo',
     (COUNT(CASE WHEN BI.`Estatus` = 1 THEN 1 END) / COUNT(CASE WHEN BI.`TercerConteo` IS NOT NULL THEN 1 END)) * 100 AS 'PorcentajeTercerConteo'
 FROM 
     `Area` AS A
