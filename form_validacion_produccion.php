@@ -373,7 +373,7 @@ if (strlen($nomina) == 7) {
         var cantidad = document.getElementById("txtCantidad").value;
         var cantidadAnterior = document.getElementById("lblCantidad").innerText;
 
-        if (cantidad === cantidadAnterior || await confirmarCambio()) {
+        if (parseFloat(cantidad) === parseFloat(cantidadAnterior) || await confirmarCambio()) {
             enviarSolicitud('<?php echo $nomina;?>-'+nombre, marbete, cantidad,auxConteo);
         }
     }
