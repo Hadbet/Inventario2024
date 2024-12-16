@@ -240,23 +240,32 @@ if (strlen($nomina) == 7) {
                     for (var i = 0; i < data.data.length; i++) {
                         if (data.data[i].FolioMarbete) {
                             if (data.data[i].Estatus === '2'){
-                                numeroParte=data.data[i].NumeroParte;
-                                storageBin=data.data[i].StorageBin;
-                                cantidad=data.data[i].PrimerConteo;
-                                var usuario = data.data[i].Usuario;
-                                var separado = usuario.split("-"); // Esto dividirá la cadena en dos partes en el lugar donde se encuentra el guión.
-                                var numeroNomina = separado[0]; // Esto te dará la primera parte, que es el número de nómina.
-                                var nombre = separado[1]; // Esto te dará la segunda parte, que es el nombre.
-                                document.getElementById("lblNombreCapturador").innerText = nombre;
-                                document.getElementById("imagenCapturador").src = 'https://grammermx.com/Fotos/'+numeroNomina+'.png';
+                                if (data.data[i].Area === '<?php echo $area;?>'){
+                                    numeroParte=data.data[i].NumeroParte;
+                                    storageBin=data.data[i].StorageBin;
+                                    cantidad=data.data[i].PrimerConteo;
+                                    var usuario = data.data[i].Usuario;
+                                    var separado = usuario.split("-"); // Esto dividirá la cadena en dos partes en el lugar donde se encuentra el guión.
+                                    var numeroNomina = separado[0]; // Esto te dará la primera parte, que es el número de nómina.
+                                    var nombre = separado[1]; // Esto te dará la segunda parte, que es el nombre.
+                                    document.getElementById("lblNombreCapturador").innerText = nombre;
+                                    document.getElementById("imagenCapturador").src = 'https://grammermx.com/Fotos/'+numeroNomina+'.png';
 
-                                document.getElementById("lblFolio").innerHTML = marbete;
-                                document.getElementById("pasoDos").style.display = 'block';
-                                document.getElementById("pasoUno").style.display = 'none';
-                                document.getElementById("lblStorageBin").innerText = storageBin;
-                                document.getElementById("lblNumeroParte").innerText = numeroParte;
-                                document.getElementById("lblCantidad").innerText = data.data[i].PrimerConteo;
-                                cargaPrimer(numeroParte);
+                                    document.getElementById("lblFolio").innerHTML = marbete;
+                                    document.getElementById("pasoDos").style.display = 'block';
+                                    document.getElementById("pasoUno").style.display = 'none';
+                                    document.getElementById("lblStorageBin").innerText = storageBin;
+                                    document.getElementById("lblNumeroParte").innerText = numeroParte;
+                                    document.getElementById("lblCantidad").innerText = data.data[i].PrimerConteo;
+                                    cargaPrimer(numeroParte);
+                                }else{
+                                    Swal.fire({
+                                        title: "El marbete no pertenece al area",
+                                        text: "Escanea otro marbete",
+                                        icon: "error"
+                                    });
+                                }
+
                             }else if(data.data[i].SegFolio === '2'){
                                 numeroParte=data.data[i].NumeroParte;
                                 storageBin=data.data[i].StorageBin;
