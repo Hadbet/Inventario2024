@@ -142,12 +142,12 @@ if (strlen($nomina) == 7) {
 <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
 
 <script>
-
+    var auxConteo;
     estatusConteo();
     function estatusConteo() {
         $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaAreaDetalle.php?area=<?php echo $area;?>', function (data) {
             for (var i = 0; i < data.data.length; i++) {
-                var auxConteo = data.data[i].Conteo;
+                auxConteo = data.data[i].Conteo;
 
                 if (auxConteo==="2"){
                     verificacion();
@@ -254,22 +254,26 @@ if (strlen($nomina) == 7) {
 
     function verificacionConteos() {
 
-        $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaSegundosConteos.php?area='+<?php echo $area;?>, function (data) {
+        if (auxConteo==="2"){
+            crearTabla();
+        }else{
+            $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaSegundosConteos.php?area='+<?php echo $area;?>, function (data) {
 
-            if (data && data.data && data.data.length > 0) {
-                for (var i = 0; i < data.data.length; i++) {
+                if (data && data.data && data.data.length > 0) {
+                    for (var i = 0; i < data.data.length; i++) {
 
 
+                    }
+                    crearTabla();
+                }else{
+                    Swal.fire({
+                        title: "Tu conteo esta bien",
+                        text: "No necesitas ir a segundos conteos",
+                        icon: "success"
+                    });
                 }
-                crearTabla();
-            }else{
-                Swal.fire({
-                    title: "Tu conteo esta bien",
-                    text: "No necesitas ir a segundos conteos",
-                    icon: "success"
-                });
-            }
-        });
+            });
+        }
     }
 
 
