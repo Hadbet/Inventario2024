@@ -62,7 +62,7 @@ if (strlen($nomina) == 7) {
                     <div class="w-50 mx-auto text-center justify-content-center py-5 my-5">
                         <h2 class="page-title mb-0">Ingresa o escanea el marbete</h2>
                         <p class="lead text-muted mb-4">Si lo vas a ingresar manual recuerda que es marbete.conteo.</p>
-                            <input class="form-control form-control-lg bg-white rounded-pill pl-5" type="search" id="txtBuscar">
+                            <input class="form-control form-control-lg bg-white rounded-pill pl-5" type="number" id="txtBuscar">
                             <p class="help-text mt-2 text-muted">Ejemplo 185.1</p>
                             <br>
                             <button class="btn btn-success text-white" onclick="verificacionRegistro()">Buscar</button>
