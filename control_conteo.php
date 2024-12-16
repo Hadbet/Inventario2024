@@ -253,7 +253,7 @@ if (strlen($nomina) == 7) {
 
     function verificacionConteos() {
 
-        $.getJSON('https://grammermx.com/Logistica/Inventario/dao/consultaSegundosConteos.php?area='+<?php echo $area;?>, function (data) {
+        $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaSegundosConteos.php?area='+<?php echo $area;?>, function (data) {
 
             if (data && data.data && data.data.length > 0) {
                 for (var i = 0; i < data.data.length; i++) {
