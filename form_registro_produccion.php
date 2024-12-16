@@ -504,7 +504,7 @@ if (strlen($nomina) == 7) {
         formData.append('comentarios', comentarios);
         formData.append('folioMarbete', marbete);
         formData.append('numeroParte', numeroParte);
-        formData.append('cantidad', cantidad);
+        formData.append('cantidad', parseFloat(cantidad));
         formData.append('storageBin', storageBin);
         formData.append('storageType', typeGlobal);
 
