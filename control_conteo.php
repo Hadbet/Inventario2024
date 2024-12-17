@@ -266,7 +266,7 @@ if (strlen($nomina) == 7) {
         if (auxConteo==="2"){
             crearTabla();
         }else{
-            $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaSegundosConteos.php?area='+<?php echo $area;?>, function (data) {
+            $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaSegundosConteos.php?area=<?php echo $area;?>', function (data) {
 
                 if (data && data.data && data.data.length > 0) {
                     for (var i = 0; i < data.data.length; i++) {
