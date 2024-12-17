@@ -295,7 +295,7 @@ if (strlen($nomina) == 7) {
         }
 
         $.ajax({
-            url: 'https://grammermx.com/Logistica/Inventario2024/dao/consultaSegundosConteosUser.php?area='+<?php echo $area;?>,
+            url: 'https://grammermx.com/Logistica/Inventario2024/dao/consultaSegundosConteosUser.php?area=<?php echo $area;?>',
             dataType: 'json',
             success: function(data) {
                 var table = $('#dataTable-1').DataTable({
