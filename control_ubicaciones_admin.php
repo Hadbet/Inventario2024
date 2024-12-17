@@ -296,6 +296,7 @@ if (strlen($nomina) == 7) {
                       document.getElementById('txtGrammerNoU').disabled = false;
                       document.getElementById('btnInsertP').disabled = false;
                       document.getElementById("txtPvbU").value = "";
+                      document.getElementById("txtPvbU").focus();
                       Swal.fire({
                           title: "Listo modifico el PVB",
                           text: data.message,
