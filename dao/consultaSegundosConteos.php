@@ -16,7 +16,7 @@ function ContadorApu($area)
     COALESCE(B.NumeroParte, I.GrammerNo) AS NumeroParte, 
     B.FolioMarbete,
     COALESCE(B.PrimerConteo, 0) AS CantidadBitacora, 
-    COALESCE(I.Cantidad, 0) AS CantidadInventarioSap, 
+    ROUND(COALESCE(I.Cantidad, 0), 2) AS CantidadInventarioSap, 
     COALESCE(B.StorageBin, I.STBin) AS StorageBin
 FROM 
     Bitacora_Inventario B
@@ -24,13 +24,13 @@ LEFT JOIN
     InventarioSap I ON B.NumeroParte = I.GrammerNo 
     AND B.StorageBin = I.STBin 
 WHERE 
-    B.Area = $area
+    B.Area = 34
     AND B.Estatus = 1
     AND (I.GrammerNo IS NULL 
-    OR B.PrimerConteo != I.Cantidad
     OR I.Cantidad = 0
     OR B.PrimerConteo = 0
-    OR ABS(B.PrimerConteo - IFNULL(I.Cantidad, 0)) >= 10000)
+    OR ABS(B.PrimerConteo - IFNULL(I.Cantidad, 0)) >= 10000
+    OR B.PrimerConteo != ROUND(I.Cantidad, 2))
 
 UNION
 
@@ -38,7 +38,7 @@ SELECT
     COALESCE(B.NumeroParte, I.GrammerNo) AS NumeroParte, 
     B.FolioMarbete,
     COALESCE(B.PrimerConteo, 0) AS CantidadBitacora, 
-    I.Cantidad AS CantidadInventarioSap, 
+    ROUND(I.Cantidad, 2) AS CantidadInventarioSap, 
     COALESCE(B.StorageBin, I.STBin) AS StorageBin
 FROM 
     InventarioSap I
@@ -46,12 +46,12 @@ LEFT JOIN
     Bitacora_Inventario B ON I.GrammerNo = B.NumeroParte 
     AND I.STBin = B.StorageBin 
 WHERE 
-    I.AreaCve = $area
+    I.AreaCve = 34
     AND (B.NumeroParte IS NULL 
-    OR B.PrimerConteo != I.Cantidad
     OR I.Cantidad = 0
     OR IFNULL(B.PrimerConteo, 0) = 0
-    OR ABS(IFNULL(B.PrimerConteo, 0) - I.Cantidad) >= 10000);");
+    OR ABS(IFNULL(B.PrimerConteo, 0) - I.Cantidad) >= 10000
+    OR B.PrimerConteo != ROUND(I.Cantidad, 2));");
 
     $resultado = mysqli_fetch_all($datos, MYSQLI_ASSOC);
 
