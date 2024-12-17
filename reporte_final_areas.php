@@ -250,6 +250,7 @@ if (strlen($nomina) == 7) {
 
     async function processAndAppendData(data, type) {
         let formattedData = [];
+        $('#data-table tbody').empty();
         for (let i = 0; i < data.data.length; i++) {
             let item = data.data[i];
             let formattedItem = {
@@ -324,8 +325,6 @@ if (strlen($nomina) == 7) {
             console.error("Error loading data: ", error);
         }
     }
-
-    loadData();
 
 </script>
 </body>
