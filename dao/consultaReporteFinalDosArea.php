@@ -10,7 +10,7 @@ function ContadorApu($area)
     $con = new LocalConector();
     $conex = $con->conectar();
 
-    $datos = mysqli_query($conex, "SELECT 
+    $consulta = "SELECT 
     ISap.GrammerNo, 
     ISap.STBin, 
     SUM(ISap.Cantidad) AS 'Total_InventarioSap', 
@@ -32,14 +32,18 @@ FROM
     InventarioSap ISap
 LEFT JOIN 
     Bitacora_Inventario BInv ON ISap.GrammerNo = BInv.NumeroParte AND ISap.STBin = BInv.StorageBin AND BInv.Estatus = 1
-    WHERE BInv.Area = $area
+    WHERE BInv.Area = ?
 GROUP BY 
     ISap.GrammerNo, 
-    ISap.STBin;");
+    ISap.STBin;";
 
-    $resultado = mysqli_fetch_all($datos, MYSQLI_ASSOC);
+    $stmt = mysqli_prepare($conex, $consulta);
+    mysqli_stmt_bind_param($stmt, "i", $area);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    $resultado = mysqli_fetch_all($result, MYSQLI_ASSOC);
     echo json_encode(array("data" => $resultado));
 }
-
 
 ?>

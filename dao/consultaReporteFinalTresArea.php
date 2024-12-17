@@ -4,12 +4,13 @@ include_once('db/db_Inventario.php');
 
 $area = $_GET['area'];
 ContadorApu($area);
+
 function ContadorApu($area)
 {
     $con = new LocalConector();
     $conex = $con->conectar();
 
-    $datos = mysqli_query($conex, "SELECT 
+    $consulta = "SELECT 
     BInv.NumeroParte AS 'GrammerNo', 
     P.Descripcion, 
     P.UM, 
@@ -32,14 +33,18 @@ FROM
 JOIN 
     Parte P ON BInv.NumeroParte = P.GrammerNo
 WHERE 
-    BInv.Estatus = 1 AND P.Area = $area
+    BInv.Estatus = 1 AND P.Area = ?
 GROUP BY 
     BInv.NumeroParte, 
-    BInv.StorageBin;");
+    BInv.StorageBin;";
 
-    $resultado = mysqli_fetch_all($datos, MYSQLI_ASSOC);
+    $stmt = mysqli_prepare($conex, $consulta);
+    mysqli_stmt_bind_param($stmt, "i", $area);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    $resultado = mysqli_fetch_all($result, MYSQLI_ASSOC);
     echo json_encode(array("data" => $resultado));
 }
-
 
 ?>
