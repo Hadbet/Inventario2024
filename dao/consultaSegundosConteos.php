@@ -31,7 +31,7 @@ WHERE
     OR B.PrimerConteo = 0
     OR ABS(B.PrimerConteo - IFNULL(I.Cantidad, 0)) >= 10000
     OR B.PrimerConteo != ROUND(I.Cantidad, 2))
-    AND ABS(COALESCE(B.PrimerConteo, 0) - ROUND(COALESCE(I.Cantidad, 0), 2)) >= 100
+    AND ABS(COALESCE(B.PrimerConteo, 0) - ROUND(COALESCE(I.Cantidad, 0), 2)) >= 10
 
 UNION
 
@@ -53,7 +53,7 @@ WHERE
     OR IFNULL(B.PrimerConteo, 0) = 0
     OR ABS(IFNULL(B.PrimerConteo, 0) - I.Cantidad) >= 10000
     OR B.PrimerConteo != ROUND(I.Cantidad, 2))
-    AND ABS(COALESCE(B.PrimerConteo, 0) - ROUND(I.Cantidad, 2)) >= 100;");
+    AND ABS(COALESCE(B.PrimerConteo, 0) - ROUND(I.Cantidad, 2)) >= 10;");
 
     $resultado = mysqli_fetch_all($datos, MYSQLI_ASSOC);
 
