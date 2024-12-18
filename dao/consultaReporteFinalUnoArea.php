@@ -22,8 +22,8 @@ function ContadorApu($area)
             BInv.PrimerConteo 
         )
     ) AS 'Total_Bitacora_Inventario', 
-    ISap.Cantidad AS 'Total_InventarioSap', 
-    ISap.Cantidad - SUM(
+    ISap.Total_Cantidad AS 'Total_InventarioSap', 
+    ISap.Total_Cantidad - SUM(
         COALESCE( 
             CASE WHEN BInv.TercerConteo != 0 THEN BInv.TercerConteo END, 
             CASE WHEN BInv.SegundoConteo != 0 THEN BInv.SegundoConteo END, 
@@ -33,10 +33,11 @@ function ContadorApu($area)
 FROM 
     Parte P
 INNER JOIN 
-    InventarioSap ISap ON P.GrammerNo = ISap.GrammerNo
+    (SELECT GrammerNo, SUM(Cantidad) AS Total_Cantidad FROM InventarioSap GROUP BY GrammerNo) ISap ON P.GrammerNo = ISap.GrammerNo
 LEFT JOIN 
     Bitacora_Inventario BInv ON P.GrammerNo = BInv.NumeroParte AND BInv.Estatus = 1
-    WHERE BInv.Area = ?
+WHERE 
+    BInv.Area = ?
 GROUP BY 
     P.GrammerNo;";
 
