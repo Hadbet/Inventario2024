@@ -926,6 +926,17 @@ if (strlen($nomina) == 7) {
         });
     }
 
+    document.getElementById('scanner_input').addEventListener('keyup', function(event) {
+        if (event.key === 'Enter' || event.keyCode === 13) {
+            escaneo();
+        }
+    });
+
+    document.getElementById('txtCantidad').addEventListener('keyup', function(event) {
+        if (event.key === 'Enter' || event.keyCode === 13) {
+            enviarDatosPro();
+        }
+    });
 </script>
 </body>
 </html>
