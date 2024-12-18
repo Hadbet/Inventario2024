@@ -207,7 +207,7 @@ async function actualizarExcelQty(file, dataFromBackend) {
 }
 
 async function numerosFaltantes() {
-    $.getJSON('https://grammermx.com/Logistica/Inventario/dao/consultaInv.php', function (data) {
+    $.getJSON('https://grammermx.com/Logistica/Inventario2024/dao/consultaInv.php', function (data) {
         if (data && data.data && data.data.length > 0) {
             Swal.fire({
                 title: "Se encontraron numeros de parte que no estan en el archivo pero si en la base de datos",
