@@ -32,7 +32,7 @@ FROM
 JOIN 
     Parte P ON BInv.NumeroParte = P.GrammerNo
 WHERE 
-    BInv.Estatus = 1
+    BInv.Estatus = 1 
 GROUP BY 
     BInv.NumeroParte, 
     BInv.StorageBin;");

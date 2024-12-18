@@ -60,7 +60,7 @@ if (strlen($nomina) == 7) {
                         <div class="col-md-12">
                             <div class="card shadow">
                                 <div class="card-body">
-                                    <h2 class="text-center">Tabla Bitacora</h2>
+                                    <h2 class="text-center">Tabla Bitacora / Carga txt sin storage unit</h2>
                                     <button class="btn btn-success text-right btnExcel" id="btnExcelBitacora"> Cargar
                                         Excel Bitacora
                                     </button>
@@ -110,7 +110,7 @@ if (strlen($nomina) == 7) {
                         <div class="col-md-12">
                             <div class="card shadow">
                                 <div class="card-body">
-                                    <h2 class="text-center">Tabla Storage</h2>
+                                    <h2 class="text-center">Tabla Storage / Carga txt</h2>
                                     <button class="btn btn-success text-right btnExcel" id="btnExcelStorage"> Cargar
                                         Excel Storage
                                     </button>
@@ -145,6 +145,25 @@ if (strlen($nomina) == 7) {
                     </div> <!-- end section -->
                 </div> <!-- .col-12 -->
 
+
+                <div class="col-12">
+                    <div class="row my-4">
+                        <!-- Small table -->
+                        <div class="col-md-12">
+                            <div class="card shadow">
+                                <div class="card-body">
+                                    <h2 class="text-center">Carga y descarga de reporte Inventario</h2>
+                                    <button class="btn btn-success text-right btnExcel" id="btnExcelExcelQty"> Cargar
+                                        Excel Inventario
+                                    </button>
+                                    <input type="file" id="fileInputExcelQty" accept=".xlsx, .xls"
+                                           style="display: none;"/>
+                                </div>
+                            </div>
+                        </div> <!-- simple table -->
+                    </div> <!-- end section -->
+                </div> <!-- .col-12 -->
+
             </div> <!-- .row -->
         </div> <!-- .container-fluid -->
 
@@ -152,8 +171,12 @@ if (strlen($nomina) == 7) {
 </div> <!-- .wrapper -->
 
 <?php include 'estaticos/scriptEstandar.php'; ?>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
 <script src="js/apps.js"></script>
 <script src="https://unpkg.com/tippy.js@6"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.2/FileSaver.min.js"></script>
+
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56159088-1"></script>
 <script>
