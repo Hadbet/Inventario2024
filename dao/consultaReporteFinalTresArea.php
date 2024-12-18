@@ -33,10 +33,11 @@ FROM
 JOIN 
     Parte P ON BInv.NumeroParte = P.GrammerNo
 WHERE 
-    BInv.Estatus = 1 AND BInv.Area = ?
+    BInv.Estatus = 1 AND BInv.Area = 34
 GROUP BY 
     BInv.NumeroParte, 
-    BInv.StorageBin;";
+    BInv.StorageBin,
+    BInv.FolioMarbete;";
 
     $stmt = mysqli_prepare($conex, $consulta);
     mysqli_stmt_bind_param($stmt, "i", $area);

@@ -13,7 +13,7 @@ function ContadorApu($area)
     $consulta = "SELECT 
     ISap.GrammerNo, 
     ISap.STBin, 
-    SUM(ISap.Cantidad) AS 'Total_InventarioSap', 
+    ISap.Total_Cantidad AS 'Total_InventarioSap', 
     SUM(
         COALESCE( 
             CASE WHEN BInv.TercerConteo != 0 THEN BInv.TercerConteo END, 
@@ -21,7 +21,7 @@ function ContadorApu($area)
             BInv.PrimerConteo 
         )
     ) AS 'Total_Bitacora_Inventario', 
-    SUM(ISap.Cantidad) - SUM(
+    ISap.Total_Cantidad - SUM(
         COALESCE( 
             CASE WHEN BInv.TercerConteo != 0 THEN BInv.TercerConteo END, 
             CASE WHEN BInv.SegundoConteo != 0 THEN BInv.SegundoConteo END, 
@@ -29,13 +29,13 @@ function ContadorApu($area)
         )
     ) AS 'Diferencia'
 FROM 
-    InventarioSap ISap
+    (SELECT GrammerNo, STBin, SUM(Cantidad) AS Total_Cantidad FROM InventarioSap GROUP BY GrammerNo, STBin) ISap
 LEFT JOIN 
     Bitacora_Inventario BInv ON ISap.GrammerNo = BInv.NumeroParte AND ISap.STBin = BInv.StorageBin AND BInv.Estatus = 1
-    WHERE BInv.Area = ?
+WHERE 
+    BInv.Area = ?
 GROUP BY 
-    ISap.GrammerNo, 
-    ISap.STBin;";
+    ISap.GrammerNo, ISap.STBin;";
 
     $stmt = mysqli_prepare($conex, $consulta);
     mysqli_stmt_bind_param($stmt, "i", $area);
