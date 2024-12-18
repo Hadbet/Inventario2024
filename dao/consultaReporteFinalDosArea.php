@@ -14,28 +14,31 @@ function ContadorApu($area)
     ISap.GrammerNo, 
     ISap.STBin, 
     ISap.Total_Cantidad AS 'Total_InventarioSap', 
-    SUM(
-        COALESCE( 
-            CASE WHEN BInv.TercerConteo != 0 THEN BInv.TercerConteo END, 
-            CASE WHEN BInv.SegundoConteo != 0 THEN BInv.SegundoConteo END, 
-            BInv.PrimerConteo 
-        )
+    COALESCE(
+        SUM(
+            COALESCE( 
+                CASE WHEN BInv.TercerConteo != 0 THEN BInv.TercerConteo END, 
+                CASE WHEN BInv.SegundoConteo != 0 THEN BInv.SegundoConteo END, 
+                BInv.PrimerConteo 
+            )
+        ), 0
     ) AS 'Total_Bitacora_Inventario', 
-    ISap.Total_Cantidad - SUM(
-        COALESCE( 
-            CASE WHEN BInv.TercerConteo != 0 THEN BInv.TercerConteo END, 
-            CASE WHEN BInv.SegundoConteo != 0 THEN BInv.SegundoConteo END, 
-            BInv.PrimerConteo 
-        )
+    ISap.Total_Cantidad - COALESCE(
+        SUM(
+            COALESCE( 
+                CASE WHEN BInv.TercerConteo != 0 THEN BInv.TercerConteo END, 
+                CASE WHEN BInv.SegundoConteo != 0 THEN BInv.SegundoConteo END, 
+                BInv.PrimerConteo 
+            )
+        ), 0
     ) AS 'Diferencia'
 FROM 
     (SELECT GrammerNo, STBin, SUM(Cantidad) AS Total_Cantidad FROM InventarioSap GROUP BY GrammerNo, STBin) ISap
 LEFT JOIN 
-    Bitacora_Inventario BInv ON ISap.GrammerNo = BInv.NumeroParte AND ISap.STBin = BInv.StorageBin AND BInv.Estatus = 1
-WHERE 
-    BInv.Area = ?
+    Bitacora_Inventario BInv ON ISap.GrammerNo = BInv.NumeroParte AND ISap.STBin = BInv.StorageBin AND BInv.Estatus = 1 AND BInv.Area = ?
 GROUP BY 
-    ISap.GrammerNo, ISap.STBin;";
+    ISap.GrammerNo, ISap.STBin  
+ORDER BY `ISap`.`GrammerNo` ASC";
 
     $stmt = mysqli_prepare($conex, $consulta);
     mysqli_stmt_bind_param($stmt, "i", $area);
