@@ -93,16 +93,17 @@ if (strlen($nomina) == 7) {
 
                     <div class="row">
                         <div class="col-md-6 col-xl-3 mb-4">
-                            <div class="card shadow bg-danger text-white border-0">
+                            <div class="card shadow bg-warning text-white border-0">
                                 <div class="card-body">
                                     <div class="row align-items-center">
                                         <div class="col-3 text-center">
-                          <span class="circle circle-sm bg-danger-light">
+                          <span class="circle circle-sm bg-secundary-light">
                             <i class="fe fe-16 fe-trending-down text-white mb-0"></i>
                           </span>
                                         </div>
                                         <div class="col pr-0">
-                                            <p class="small mb-0 text-white">Partes con negativos</p>
+                                            <!--<p class="small mb-0 text-white">Partes con negativos</p>-->
+                                            <p class="small mb-0 text-white">Cantidad SAP</p>
                                             <span class="h3 mb-0 text-white" id="partesNegativo"></span>
                                         </div>
                                     </div>
@@ -120,7 +121,8 @@ if (strlen($nomina) == 7) {
                           </span>
                                         </div>
                                         <div class="col pr-0">
-                                            <p class="small mb-0 text-white">Partes con positivos</p>
+                                            <!--<p class="small mb-0 text-white">Partes con positivos</p>-->
+                                            <p class="small mb-0 text-white">Contador</p>
                                             <span class="h3 mb-0 text-white" id="partesPositivo"></span>
                                         </div>
                                     </div>
@@ -129,16 +131,19 @@ if (strlen($nomina) == 7) {
                         </div>
 
                         <div class="col-md-6 col-xl-3 mb-4">
-                            <div class="card shadow bg-danger text-white border-0">
+                            <div class="card shadow bg-warning text-white border-0">
                                 <div class="card-body">
                                     <div class="row align-items-center">
                                         <div class="col-3 text-center">
-                          <span class="circle circle-sm bg-danger-light">
+                          <span class="circle circle-sm bg-warning-light">
                             <i class="fe fe-16 fe-alert-circle text-white mb-0"></i>
                           </span>
+
+
                                         </div>
                                         <div class="col pr-0">
-                                            <p class="small mb-0 text-white" >Costo Negativo</p>
+                                            <!--<p class="small mb-0 text-white" >Costo Negativo</p>-->
+                                            <p class="small mb-0 text-white" >Valor SAP</p>
                                             <span class="h3 mb-0 text-white" id="costoNegativo"></span>
                                         </div>
                                     </div>
@@ -156,7 +161,8 @@ if (strlen($nomina) == 7) {
                           </span>
                                         </div>
                                         <div class="col pr-0">
-                                            <p class="small mb-0 text-white">Costo Positivas</p>
+                                            <!--<p class="small mb-0 text-white">Costo Positivas</p>-->
+                                            <p class="small mb-0 text-white" >Valor Contador</p>
                                             <span class="h3 mb-0 text-white" id="costoPositivo"></span>
                                         </div>
                                     </div>
