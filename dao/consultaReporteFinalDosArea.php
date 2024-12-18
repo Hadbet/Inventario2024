@@ -35,10 +35,11 @@ function ContadorApu($area)
 FROM 
     (SELECT GrammerNo, STBin, SUM(Cantidad) AS Total_Cantidad FROM InventarioSap GROUP BY GrammerNo, STBin) ISap
 LEFT JOIN 
-    Bitacora_Inventario BInv ON ISap.GrammerNo = BInv.NumeroParte AND ISap.STBin = BInv.StorageBin AND BInv.Estatus = 1 AND BInv.Area = ?
+    Bitacora_Inventario BInv ON ISap.GrammerNo = BInv.NumeroParte AND ISap.STBin = BInv.StorageBin AND BInv.Estatus = 1
+    where BInv.Area = ?
 GROUP BY 
     ISap.GrammerNo, ISap.STBin  
-ORDER BY `ISap`.`GrammerNo` ASC";
+ORDER BY `ISap`.`GrammerNo` ASC;";
 
     $stmt = mysqli_prepare($conex, $consulta);
     mysqli_stmt_bind_param($stmt, "i", $area);
