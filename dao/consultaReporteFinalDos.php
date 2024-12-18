@@ -20,13 +20,13 @@ function ContadorApu()
             BInv.PrimerConteo 
         )
     ) AS 'Total_Bitacora_Inventario', 
-    SUM(ISap.Cantidad) - SUM(
+     SUM(
         COALESCE( 
             CASE WHEN BInv.TercerConteo != 0 THEN BInv.TercerConteo END, 
             CASE WHEN BInv.SegundoConteo != 0 THEN BInv.SegundoConteo END, 
             BInv.PrimerConteo 
         )
-    ) AS 'Diferencia'
+    )-SUM(ISap.Cantidad) AS 'Diferencia'
 FROM 
     InventarioSap ISap
 LEFT JOIN 
