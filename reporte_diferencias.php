@@ -153,8 +153,8 @@ if (strlen($nomina) == 7) {
                 for (var i = 0; i < data.data.length; i++) {
                     document.getElementById("lblDinero").innerText = (parseFloat(data.data[i].CostoTotalInventarioSap - data.data[i].CostoTotalPrimerConteoBitacora).toLocaleString("es-MX", {style: "currency", currency: "MXN"}));
                     document.getElementById("lblCantidad").innerText = (data.data[i].TotalInventarioSap - data.data[i].TotalPrimerConteoBitacora).toFixed(2);
-                    crearTabla();
                 }
+                crearTabla();
             }else{
                 Swal.fire({
                     title: "Tu conteo esta bien",
@@ -167,7 +167,7 @@ if (strlen($nomina) == 7) {
 
     function crearTabla() {
         $.ajax({
-            url: 'https://grammermx.com/Logistica/Inventario2024/dao/consultaSegundosConteosAdmin.php', // Reemplaza esto con la URL de tus datos
+            url: 'https://grammermx.com/Logistica/Inventario2024/dao/consultaSegundosConteosAdminAux.php', // Reemplaza esto con la URL de tus datos
             dataType: 'json',
             success: function(data) {
                 // Filtrar los datos para eliminar duplicados
@@ -187,7 +187,7 @@ if (strlen($nomina) == 7) {
                         { data: 'NumeroParte' },
                         { data: 'StorageBin' },
                         {
-                            data: 'CantidadBitacora',
+                            data: 'CantidadContada',
                             render: function(data, type, row) {
                                 return parseFloat(data).toFixed(2);
                             }
@@ -199,7 +199,7 @@ if (strlen($nomina) == 7) {
                             }
                         },
                         {
-                            data: 'DiferenciaCantidad',
+                            data: 'Diferencia',
                             render: function(data, type, row) {
                                 return parseFloat(data).toFixed(2);
                             }
