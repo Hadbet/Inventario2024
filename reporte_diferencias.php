@@ -167,7 +167,7 @@ if (strlen($nomina) == 7) {
 
     function crearTabla() {
         $.ajax({
-            url: 'https://grammermx.com/Logistica/Inventario2024/dao/consultaSegundosConteosAdminAux.php', // Reemplaza esto con la URL de tus datos
+            url: 'https://grammermx.com/Logistica/Inventario2024/dao/consultaSegundosConteosCostoAdminAux.php', // Reemplaza esto con la URL de tus datos
             dataType: 'json',
             success: function(data) {
                 // Filtrar los datos para eliminar duplicados
