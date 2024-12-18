@@ -219,50 +219,6 @@ if (strlen($nomina) == 7) {
         );
     });
 
-    document.getElementById("tooltipArea").addEventListener("click", function () {
-        mostrarImagenTooltip(
-            "tooltipArea",
-            "https://grammermx.com/excelInventario/imgs/area.png",
-            320,
-            120
-        );
-    });
-
-    document.getElementById("tooltipUbicaciones").addEventListener("click", function () {
-        mostrarImagenTooltip(
-            "tooltipUbicaciones",
-            "https://grammermx.com/excelInventario/imgs/area.png",
-            320,
-            120
-        );
-    });
-
-    document.getElementById("tooltiInventario").addEventListener("click", function () {
-        mostrarImagenTooltip(
-            "tooltiInventario",
-            "https://grammermx.com/excelInventario/imgs/inventarioSap.png",
-            310,
-            120
-        );
-    });
-
-    document.getElementById("tooltiBin").addEventListener("click", function () {
-        mostrarImagenTooltip(
-            "tooltiBin",
-            "https://grammermx.com/excelInventario/imgs/bin.png",
-            250,
-            120
-        );
-    });
-
-    document.getElementById("tooltiParte").addEventListener("click", function () {
-        mostrarImagenTooltip(
-            "tooltiParte",
-            "https://grammermx.com/excelInventario/imgs/parte.png",
-            320,
-            120
-        );
-    });
 </script>
 
 <!-- -Archivos de jQuery-->
