@@ -17,11 +17,11 @@ COALESCE(
     END, 0) AS CantidadBitacora, 
 COALESCE(I.Cantidad, 0) AS CantidadInventarioSap, 
 COALESCE(B.StorageBin, I.STBin) AS StorageBin, 
-(COALESCE(I.Cantidad, 0) - COALESCE(
+(COALESCE(
     CASE WHEN B.TercerConteo != 0 THEN B.TercerConteo 
          WHEN B.SegundoConteo != 0 THEN B.SegundoConteo 
          ELSE B.PrimerConteo 
-    END, 0)) AS DiferenciaCantidad, 
+    END, 0)-COALESCE(I.Cantidad, 0)) AS DiferenciaCantidad, 
 A.AreaNombre 
 FROM Bitacora_Inventario B 
 LEFT JOIN InventarioSap I ON B.NumeroParte = I.GrammerNo AND B.StorageBin = I.STBin 
