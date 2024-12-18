@@ -267,7 +267,7 @@ if (strlen($nomina) == 7) {
                 Sap: type === 'tres' ? '' : item.Total_InventarioSap,
                 Conteo: type === 'tres' ? item.Total_Conteo : item.Total_Bitacora_Inventario,
                 Dif: type === 'tres' ? '' : item.Diferencia,
-                Costo: parseFloat(item.Costo_Unitario)*parseFloat(item.Total_Conteo), // Aquí debes calcular el costo
+                Costo: parseFloat(item.Costo_Unitario)*parseFloat(item.Total_Bitacora_Inventario), // Aquí debes calcular el costo
                 Comentario: type === 'tres' ? item.Comentario : ''
             };
             formattedData.push(formattedItem);
