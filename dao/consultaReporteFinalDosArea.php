@@ -30,7 +30,7 @@ function ContadorApu($area)
     ) AS 'Diferencia'
 FROM 
     (SELECT GrammerNo, STBin, SUM(Cantidad) AS Total_Cantidad FROM InventarioSap GROUP BY GrammerNo, STBin) ISap
-RIGHT JOIN 
+LEFT JOIN 
     Bitacora_Inventario BInv ON ISap.GrammerNo = BInv.NumeroParte AND ISap.STBin = BInv.StorageBin AND BInv.Estatus = 1
 WHERE 
     BInv.Area = ?
