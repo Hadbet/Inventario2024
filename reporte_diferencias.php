@@ -170,8 +170,9 @@ if (strlen($nomina) == 7) {
             url: 'https://grammermx.com/Logistica/Inventario2024/dao/consultaSegundosConteosCostoAdminAux.php', // Reemplaza esto con la URL de tus datos
             dataType: 'json',
             success: function(data) {
+
                 var table = $('#dataTable-1').DataTable({
-                    data: filteredData, // Usar los datos filtrados
+                    data: data, // Usar los datos filtrados
                     columns: [
                         { data: 'FolioMarbete' },
                         { data: 'NumeroParte' },
