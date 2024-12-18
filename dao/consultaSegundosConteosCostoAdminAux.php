@@ -10,31 +10,41 @@ function ContadorApu()
     $con = new LocalConector();
     $conex = $con->conectar();
 
-    $datos = mysqli_query($conex, "SELECT * FROM (
-    SELECT 
-        (SELECT SUM(Cantidad) FROM InventarioSap) AS TotalInventarioSap, 
-        (SELECT SUM(
-            COALESCE( 
-                CASE WHEN TercerConteo != 0 THEN TercerConteo END, 
-                CASE WHEN SegundoConteo != 0 THEN SegundoConteo END, 
-                PrimerConteo 
-            )
-        ) FROM Bitacora_Inventario WHERE  Estatus = 1) AS TotalPrimerConteoBitacora, 
-        (SELECT SUM(InventarioSap.Cantidad * (Parte.Costo / Parte.Por)) 
-         FROM InventarioSap 
-         INNER JOIN Parte ON InventarioSap.GrammerNo = Parte.GrammerNo) AS CostoTotalInventarioSap, 
-        (SELECT SUM(
-            COALESCE( 
-                CASE WHEN Bitacora_Inventario.TercerConteo != 0 THEN Bitacora_Inventario.TercerConteo END, 
-                CASE WHEN Bitacora_Inventario.SegundoConteo != 0 THEN Bitacora_Inventario.SegundoConteo END, 
-                Bitacora_Inventario.PrimerConteo 
-            ) * (Parte.Costo / Parte.Por)
-        ) 
-         FROM Bitacora_Inventario 
-         INNER JOIN Parte ON Bitacora_Inventario.NumeroParte = Parte.GrammerNo 
-         WHERE Bitacora_Inventario.Estatus = 1) AS CostoTotalPrimerConteoBitacora
-) AS Subquery
-WHERE ABS(Subquery.CostoTotalInventarioSap - Subquery.CostoTotalPrimerConteoBitacora) >= 3000;");
+    $datos = mysqli_query($conex, "SELECT 
+    B.FolioMarbete,
+    B.NumeroParte,
+    A.AreaNombre,
+    COALESCE(
+        CASE 
+            WHEN B.TercerConteo != 0 THEN B.TercerConteo
+            WHEN B.SegundoConteo != 0 THEN B.SegundoConteo
+            ELSE B.PrimerConteo
+        END, 
+    0) AS CantidadContada,
+    COALESCE(I.Cantidad, 0) AS CantidadInventarioSap,
+    ROUND(
+        COALESCE(
+            CASE 
+                WHEN B.TercerConteo != 0 THEN B.TercerConteo
+                WHEN B.SegundoConteo != 0 THEN B.SegundoConteo
+                ELSE B.PrimerConteo
+            END, 
+        0) - COALESCE(I.Cantidad, 0), 
+    3) AS Diferencia,
+    B.StorageBin ,
+    I.STType
+FROM 
+    Bitacora_Inventario B 
+LEFT JOIN 
+    InventarioSap I 
+ON 
+    B.Area = I.AreaCve AND B.StorageBin = I.STBin AND B.NumeroParte = I.GrammerNo 
+LEFT JOIN
+    Area A
+ON
+    B.Area = A.IdArea
+WHERE 
+    B.Estatus = 1  ");
     $resultado = mysqli_fetch_all($datos, MYSQLI_ASSOC);
     echo json_encode(array("data" => $resultado));
 }
