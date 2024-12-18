@@ -18,18 +18,23 @@ function ContadorApu()
         CASE WHEN BInv.TercerConteo != 0 THEN BInv.TercerConteo END, 
         CASE WHEN BInv.SegundoConteo != 0 THEN BInv.SegundoConteo END, 
         BInv.PrimerConteo 
-    ) FROM Bitacora_Inventario BInv WHERE BInv.NumeroParte = ISap.GrammerNo AND BInv.StorageBin = ISap.STBin AND BInv.Estatus = 1) AS 'Total_Bitacora_Inventario',
-    ISap.Cantidad - (SELECT COALESCE( 
+    ) 
+    FROM Bitacora_Inventario BInv 
+    WHERE BInv.NumeroParte = ISap.GrammerNo AND BInv.StorageBin = ISap.STBin AND BInv.Estatus = 1 
+    LIMIT 1) AS 'Total_Bitacora_Inventario', 
+    ISap.Cantidad - 
+    (SELECT COALESCE( 
         CASE WHEN BInv.TercerConteo != 0 THEN BInv.TercerConteo END, 
         CASE WHEN BInv.SegundoConteo != 0 THEN BInv.SegundoConteo END, 
         BInv.PrimerConteo 
-    ) FROM Bitacora_Inventario BInv WHERE BInv.NumeroParte = ISap.GrammerNo AND BInv.StorageBin = ISap.STBin AND BInv.Estatus = 1) AS 'Diferencia'
-FROM 
-    InventarioSap ISap 
-WHERE 
-    ISap.GrammerNo IN (SELECT NumeroParte FROM Bitacora_Inventario)  
-ORDER BY 
-    ISap.GrammerNo ASC;");
+    ) 
+    FROM Bitacora_Inventario BInv 
+    WHERE BInv.NumeroParte = ISap.GrammerNo AND BInv.StorageBin = ISap.STBin AND BInv.Estatus = 1 
+    LIMIT 1) AS 'Diferencia' 
+FROM InventarioSap ISap 
+WHERE ISap.GrammerNo IN (SELECT NumeroParte FROM Bitacora_Inventario)
+ORDER BY ISap.GrammerNo ASC 
+LIMIT 0, 25");
 
     $resultado = mysqli_fetch_all($datos, MYSQLI_ASSOC);
     echo json_encode(array("data" => $resultado));
