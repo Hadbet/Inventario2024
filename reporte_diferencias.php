@@ -170,8 +170,18 @@ if (strlen($nomina) == 7) {
             url: 'https://grammermx.com/Logistica/Inventario2024/dao/consultaSegundosConteosAdmin.php', // Reemplaza esto con la URL de tus datos
             dataType: 'json',
             success: function(data) {
+                // Filtrar los datos para eliminar duplicados
+                var filteredData = [];
+                var folios = new Set();
+                for (var i = 0; i < data.data.length; i++) {
+                    if (!folios.has(data.data[i].FolioMarbete)) {
+                        folios.add(data.data[i].FolioMarbete);
+                        filteredData.push(data.data[i]);
+                    }
+                }
+
                 var table = $('#dataTable-1').DataTable({
-                    data: data.data,
+                    data: filteredData, // Usar los datos filtrados
                     columns: [
                         { data: 'FolioMarbete' },
                         { data: 'NumeroParte' },
