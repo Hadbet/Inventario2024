@@ -33,7 +33,7 @@ ORDER BY
     ISap.GrammerNo ASC;";
 
     $stmt = mysqli_prepare($conex, $consulta);
-    mysqli_stmt_bind_param($stmt, "ii", $area,$area);
+    mysqli_stmt_bind_param($stmt, "iii", $area,$area,$area);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
 
