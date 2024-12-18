@@ -172,7 +172,7 @@ if (strlen($nomina) == 7) {
             success: function(data) {
 
                 var table = $('#dataTable-1').DataTable({
-                    data: data, // Usar los datos filtrados
+                    data: data.data, // Usar los datos filtrados
                     columns: [
                         { data: 'FolioMarbete' },
                         { data: 'NumeroParte' },
