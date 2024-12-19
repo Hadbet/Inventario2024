@@ -26,33 +26,29 @@ foreach ($data as $record) {
     $stor_bin = mysqli_real_escape_string($conexion, $record['storBin']);
     $materialParte = mysqli_real_escape_string($conexion, $record['materialNo']);
     $consP = "SELECT 
-InvSap.InventoryItem, 
-InvSap.InvRecount, 
-InvSap.StorageType,
-InvSap.StorageBin,
-InvSap.Plant,
-InvSap.Material,
-Bitacora_Inventario.ConteoFinal
-FROM 
-InvSap
-INNER JOIN 
-(SELECT 
+    InvSap.InventoryItem, 
+    InvSap.InvRecount, 
+    InvSap.StorageType,
+    InvSap.StorageBin,
+    InvSap.Plant,
+    InvSap.Material,
     CASE 
-        WHEN (SegundoConteo IS NULL OR SegundoConteo = 0) AND (TercerConteo IS NULL OR TercerConteo = 0) THEN PrimerConteo 
-        WHEN (TercerConteo IS NULL OR TercerConteo = 0) AND (SegundoConteo IS NOT NULL AND SegundoConteo != 0) THEN SegundoConteo 
-        WHEN (TercerConteo IS NOT NULL AND TercerConteo != 0) THEN TercerConteo 
-    END AS ConteoFinal, 
-    NumeroParte, 
-    StorageBin 
- FROM 
+        WHEN (Bitacora_Inventario.SegundoConteo IS NULL OR Bitacora_Inventario.SegundoConteo = 0) AND (Bitacora_Inventario.TercerConteo IS NULL OR Bitacora_Inventario.TercerConteo = 0) THEN Bitacora_Inventario.PrimerConteo 
+        WHEN (Bitacora_Inventario.TercerConteo IS NULL OR Bitacora_Inventario.TercerConteo = 0) AND (Bitacora_Inventario.SegundoConteo IS NOT NULL AND Bitacora_Inventario.SegundoConteo != 0) THEN Bitacora_Inventario.SegundoConteo 
+        WHEN (Bitacora_Inventario.TercerConteo IS NOT NULL AND Bitacora_Inventario.TercerConteo != 0) THEN Bitacora_Inventario.TercerConteo 
+    END AS ConteoFinal
+FROM 
+    InvSap 
+JOIN 
     Bitacora_Inventario 
- WHERE 
-    StorageBin = '$stor_bin' AND 
-    NumeroParte = '$materialParte' AND 
-    Estatus = 1) AS Bitacora_Inventario
 ON 
-InvSap.Material = Bitacora_Inventario.NumeroParte AND 
-InvSap.StorageBin = Bitacora_Inventario.StorageBin;";
+    InvSap.Material = Bitacora_Inventario.NumeroParte AND 
+    InvSap.StorageBin = Bitacora_Inventario.StorageBin
+WHERE 
+    InvSap.Material = '$materialParte' AND 
+    InvSap.StorageBin = '$stor_bin' AND 
+    Bitacora_Inventario.NumeroParte = '$materialParte' AND 
+    Bitacora_Inventario.StorageBin = '$stor_bin';";
 
     $rsconsPro = mysqli_query($conexion, $consP); // Ejecutar la consulta
 
