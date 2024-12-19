@@ -73,7 +73,7 @@ if (strlen($nomina) == 7) {
                                     <button class="btn btn-primary text-right btnExcel" id="btnTxtBitacora"> Actualizar
                                         txt
                                     </button>
-                                    <input type="file" id="fileInputTxt" accept=".txt" style="display: none;"/>
+                                    <input type="file" id="fileInputTxt" accept=".txt" style="display: none;" multiple/>
                                     <br><br>
                                     <!-- table -->
                                     <table class="table datatables" id="tablaBitacora">
@@ -123,7 +123,7 @@ if (strlen($nomina) == 7) {
                                     <button class="btn btn-primary text-right btnExcel" id="btnTxtStorage"> Actualizar
                                         txt
                                     </button>
-                                    <input type="file" id="fileInputTxtS" accept=".txt" style="display: none;"/>
+                                    <input type="file" id="fileInputTxtS" accept=".txt" style="display: none;" multiple/>
                                     <br><br>
                                     <!-- table -->
                                     <table class="table table-striped table-bordered mt-3" id="tablaStorage">
