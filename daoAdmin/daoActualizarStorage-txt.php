@@ -24,17 +24,23 @@ foreach ($data as $record) {
     $storageUnit = mysqli_real_escape_string($conexion, $record['storUnit']);
     $storageBin = mysqli_real_escape_string($conexion, $record['storBin']);
 
-    $consP = "SELECT Cantidad
-                FROM Storage_Unit
-                WHERE Id_StorageUnit = '$storageUnit'
-                AND Estatus = 1 and Storage_Bin = '$storageBin'";
+    $consP = "SELECT Storage_Unit.Storage_Bin,Storage_Unit.Storage_Type,Storage_Unit.Cantidad, InvSap.InventoryItem, InvSap.Plant
+FROM Storage_Unit
+JOIN InvSap ON Storage_Unit.Id_StorageUnit = InvSap.storUnitType
+WHERE Storage_Unit.Id_StorageUnit = '$storageUnit'
+AND Storage_Unit.Estatus = 1 
+AND Storage_Unit.Storage_Bin = '$storageBin'";
     $rsconsPro = mysqli_query($conexion, $consP);
 
     if ($rsconsPro) {
         if ($row = mysqli_fetch_assoc($rsconsPro)) {
             $updatedData[] = [
                 'storageUnit' => $storageUnit,
-                'cantidad' => $row['Cantidad']
+                'cantidad' => $row['Cantidad'],
+                'inventoryItem' => $row['InventoryItem'],
+                'plan' => $row['Plant'],
+                'storage_Type' => $row['Storage_Type'],
+                'storage_Bin' => $row['Storage_Bin']
             ];
         } else {
             // Si no hay resultados, asignar valores predeterminados

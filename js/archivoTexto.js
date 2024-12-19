@@ -206,6 +206,7 @@ async function enviarDatosAlBackendStorage(data) {
 
 async function actualizarArchivoStorage(file, dataFromBackend) {
     const reader = new FileReader();
+    const noMatchData = []; // Array para guardar los datos que no se encontraron
 
     reader.onload = function (event) {
         const originalContent = event.target.result;
@@ -226,6 +227,9 @@ async function actualizarArchivoStorage(file, dataFromBackend) {
                 if (matchingData) {
                     // Reemplazar el valor en la columna "Qty & UoM"
                     return line.replace(/____________/, matchingData.cantidad);
+                } else {
+                    // Si no se encontró una coincidencia, guardar los datos en noMatchData
+                    noMatchData.push({ storBin, storUnit });
                 }
             }
 
@@ -239,6 +243,9 @@ async function actualizarArchivoStorage(file, dataFromBackend) {
         link.href = URL.createObjectURL(blob);
         link.download = `actualizado_${file.name}`;
         link.click();
+
+        // Llamar a la función para descargar noMatchData en un archivo Excel
+        descargarDataFromBackend(noMatchData);
     };
 
     reader.onerror = (error) => {
@@ -246,4 +253,36 @@ async function actualizarArchivoStorage(file, dataFromBackend) {
     };
 
     reader.readAsText(file);
+}
+
+function descargarDataFromBackend(dataFromBackend) {
+    var wb = XLSX.utils.book_new();
+    wb.Props = {
+        Title: "SheetJS",
+        Subject: "Numeros de parte faltantes",
+        Author: "Hadbetsito",
+        CreatedDate: new Date()
+    };
+    wb.SheetNames.push("Test Sheet");
+    var ws_data = [];
+
+    for (var i = 0; i < dataFromBackend.length; i++) {
+        var storBin = dataFromBackend[i].storBin;
+        var storUnit = dataFromBackend[i].storUnit;
+
+        ws_data.push([storBin, storUnit]);
+    }
+
+    var ws = XLSX.utils.aoa_to_sheet(ws_data);
+    wb.Sheets["Test Sheet"] = ws;
+    var wbout = XLSX.write(wb, {bookType:'xlsx',  type: 'binary'});
+
+    function s2ab(s) {
+        var buf = new ArrayBuffer(s.length);
+        var view = new Uint8Array(buf);
+        for (var i=0; i<s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+        return buf;
+    }
+
+    saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), 'Numeros de parte faltantes.xlsx');
 }
