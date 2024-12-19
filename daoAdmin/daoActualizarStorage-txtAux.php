@@ -23,7 +23,7 @@ $updatedData = [];
 foreach ($data['storageUnits'] as $record) {
     $storageUnit = mysqli_real_escape_string($conexion, $record['storUnit']);
 
-    $consP = "SELECT Storage_Unit.Storage_Bin,Storage_Unit.Storage_Type,Storage_Unit.Cantidad, InvSap.InventoryItem, InvSap.Plant
+    $consP = "SELECT Storage_Unit.Numero_Parte,Storage_Unit.Storage_Bin,Storage_Unit.Storage_Type,Storage_Unit.Cantidad, InvSap.InventoryItem, InvSap.Plant,InvSap.InvRecount
     FROM Storage_Unit JOIN InvSap ON Storage_Unit.Id_StorageUnit = InvSap.storUnitType WHERE Storage_Unit.Id_StorageUnit = '$storageUnit' AND Storage_Unit.Estatus = 1";
     $rsconsPro = mysqli_query($conexion, $consP);
 
@@ -35,7 +35,9 @@ foreach ($data['storageUnits'] as $record) {
                 'inventoryItem' => $row['InventoryItem'],
                 'plan' => $row['Plant'],
                 'storage_Type' => $row['Storage_Type'],
-                'storage_Bin' => $row['Storage_Bin']
+                'storage_Bin' => $row['Storage_Bin'],
+                'invRecount' => $row['InvRecount'],
+                'numero_Parte' => $row['Numero_Parte']
             ];
         } else {
             // If no results, assign default values
@@ -45,7 +47,9 @@ foreach ($data['storageUnits'] as $record) {
                 'inventoryItem' => '',
                 'plan' => '',
                 'storage_Type' => '',
-                'storage_Bin' => ''
+                'storage_Bin' => '',
+                'invRecount' => '',
+                'numero_Parte' => ''
             ];
         }
     } else {

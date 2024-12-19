@@ -280,16 +280,27 @@ function descargarDataFromBackend(dataFromBackend) {
     wb.SheetNames.push("Test Sheet");
     var ws_data = [['StorBin', 'StorUnit', 'Cantidad', 'InventoryItem', 'Plan', 'Storage_Type', 'Storage_Bin']]; // Encabezados de las columnas
 
+    var storBinCounts = {}; // Para llevar un registro de los 'StorBin' que ya hemos visto
+
     for (var i = 0; i < dataFromBackend.length; i++) {
-        var storBin = dataFromBackend[i].storBin;
-        var storUnit = dataFromBackend[i].storUnit;
-        var cantidad = dataFromBackend[i].cantidad;
         var inventoryItem = dataFromBackend[i].inventoryItem;
+        var storage_Bin = dataFromBackend[i].storage_Bin;
+        var invRecount = dataFromBackend[i].invRecount;
+        var numeroParte = dataFromBackend[i].numero_Parte;
+        var cantidad = dataFromBackend[i].cantidad;
         var plan = dataFromBackend[i].plan;
         var storage_Type = dataFromBackend[i].storage_Type;
-        var storage_Bin = dataFromBackend[i].storage_Bin;
 
-        ws_data.push([storBin, storUnit, cantidad, inventoryItem, plan, storage_Type, storage_Bin]);
+        // Si 'StorBin' no comienza con 'P' y ya lo hemos visto antes, añadir un contador al final
+        var storage_Bin_Modified = storage_Bin;
+        if (!storage_Bin.startsWith('P') && storage_Bin in storBinCounts) {
+            storBinCounts[storage_Bin]++;
+            storage_Bin_Modified = storage_Bin + '/' + storBinCounts[storage_Bin];
+        } else {
+            storBinCounts[storage_Bin] = 1;
+        }
+
+        ws_data.push([inventoryItem, invRecount, storage_Bin, storage_Bin_Modified, storBinCounts[storage_Bin], numeroParte, plan, cantidad, storage_Type]);
     }
 
     var ws = XLSX.utils.aoa_to_sheet(ws_data);
