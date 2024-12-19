@@ -25,7 +25,8 @@ foreach ($data as $record) {
 
     $consP = "SELECT Cantidad
                 FROM Storage_Unit
-                WHERE Id_StorageUnit = '$storageUnit'";
+                WHERE Id_StorageUnit = '$storageUnit'
+                AND Estatus = 1";
     $rsconsPro = mysqli_query($conexion, $consP);
 
     if ($rsconsPro) {

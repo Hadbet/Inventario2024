@@ -7,25 +7,28 @@ document.getElementById('btnTxtBitacora').addEventListener('click', () => {
 });
 
 document.getElementById('fileInputTxt').addEventListener('change', async (event) => {
-    const file = event.target.files[0]; // El archivo seleccionado
-    console.log("Archivo seleccionado:", file);  // Agrega esto para verificar el archivo
+    const files = event.target.files; // Todos los archivos seleccionados
+    console.log("Archivos seleccionados:", files);  // Verifica los archivos seleccionados
 
-    if (file) {
-        // Procesar el archivo y enviar los datos al backend
-        const dataToBackend = await manejarArchivo(file);
-        const dataFromBackend = await enviarDatosAlBackend(dataToBackend);
+    if (files.length > 0) {
+        for (const file of files) {
+            console.log("Procesando archivo:", file.name);
 
-        if (dataFromBackend.length > 0) {
-            // Solo actualiza si dataFromBackend tiene datos
-            actualizarContenidoArchivo(file, dataFromBackend);
-        } else {
-            console.error("No se recibieron datos válidos del backend.");
+            // Procesar cada archivo y enviar los datos al backend
+            const dataToBackend = await manejarArchivo(file);
+            const dataFromBackend = await enviarDatosAlBackend(dataToBackend);
+
+            if (dataFromBackend.length > 0) {
+                // Solo actualiza si dataFromBackend tiene datos
+                actualizarContenidoArchivo(file, dataFromBackend);
+            } else {
+                console.error(`No se recibieron datos válidos del backend para el archivo ${file.name}.`);
+            }
         }
     } else {
-        console.error("No se seleccionó ningún archivo.");
+        console.error("No se seleccionaron archivos.");
     }
 });
-
 
 async function manejarArchivo(file) {
     const reader = new FileReader();
@@ -49,7 +52,6 @@ async function manejarArchivo(file) {
                 })
                 .filter(Boolean);
 
-
             // Resolvemos la promesa con los datos procesados
             resolve(datos);
         };
@@ -61,15 +63,13 @@ async function manejarArchivo(file) {
         reader.readAsText(file);
     });
 }
+
 async function actualizarContenidoArchivo(file, dataFromBackend) {
     const reader = new FileReader();
 
     reader.onload = function (event) {
         const originalContent = event.target.result;
         const originalLines = originalContent.split(/\r?\n/); // Divide el archivo en líneas
-
-        //console.log("Contenido original del archivo:");
-        //console.log(originalContent);
 
         const updatedLines = originalLines.map((line) => {
             // Divide la línea en partes basándose en espacios/tabulaciones
@@ -79,30 +79,18 @@ async function actualizarContenidoArchivo(file, dataFromBackend) {
                 const storBin = parts[1]; // `storBin` es el segundo elemento
                 const materialNo = parts[5]; // `materialNo` es el sexto elemento
 
-                //console.log(`Procesando línea: ${line}`);
-                //console.log(`Extracted storBin: ${storBin}, materialNo: ${materialNo}`);
-
                 // Buscar coincidencia en dataFromBackend
                 const matchingData = dataFromBackend.find(
                     (item) => item.storBin === storBin && item.materialNo === materialNo
                 );
 
                 if (matchingData) {
-                    //console.log(`Coincidencia encontrada para storBin: ${storBin}, materialNo: ${materialNo}`);
-                    //console.log(`Reemplazando ______________ con: ${matchingData.conteoFinal}`);
                     return line.replace("______________", matchingData.conteoFinal);
-                } else {
-                    //console.log(`No se encontró coincidencia para storBin: ${storBin}, materialNo: ${materialNo}`);
                 }
-            } else {
-                //console.log("Formato de línea inesperado:", line);
             }
 
             return line; // Mantener la línea sin cambios si no hay coincidencia
         });
-
-        //console.log("Contenido actualizado del archivo:");
-        //console.log(updatedLines.join("\n")); // Verifica el contenido final
 
         const finalContent = updatedLines.join("\n"); // Unir las líneas actualizadas
         const blob = new Blob([finalContent], { type: "text/plain" });
@@ -113,16 +101,12 @@ async function actualizarContenidoArchivo(file, dataFromBackend) {
         link.click();
     };
 
-    //console.log("Datos del backend recibidos:");
-    //console.log(JSON.stringify(dataFromBackend, null, 2)); // Verifica los datos recibidos del backend
-
     reader.readAsText(file);
 }
 
-
 async function enviarDatosAlBackend(data) {
     try {
-        const response = await fetch('daoAdmin/daoActualizar-txt.php', {
+        const response = await fetch('dao/daoActualizar-txt.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -139,30 +123,37 @@ async function enviarDatosAlBackend(data) {
 /**********************************************************************************************************************/
 /*****************************************************TABLA STORAGE_UNIT***********************************************/
 /**********************************************************************************************************************/
-
 document.getElementById('btnTxtStorage').addEventListener('click', () => {
     document.getElementById('fileInputTxtS').click();
 });
 
 document.getElementById('fileInputTxtS').addEventListener('change', async (event) => {
-    const file = event.target.files[0]; // El archivo seleccionado
-    console.log("Archivo seleccionado:", file);  // Verifica el archivo seleccionado
+    const files = Array.from(event.target.files); // Todos los archivos seleccionados
+    console.log("Archivos seleccionados:", files); // Verificar los archivos
 
-    if (file) {
-        // Procesar el archivo y enviar los datos al backend
-        const dataToBackend = await manejarArchivoStorage(file);
-        const dataFromBackend = await enviarDatosAlBackendStorage(dataToBackend);
+    for (const file of files) {
+        console.log("Procesando archivo:", file.name);
 
-        if (dataFromBackend.length > 0) {
-            // Solo actualiza si dataFromBackend tiene datos
-            actualizarArchivoStorage(file, dataFromBackend);
+        if (file) {
+            try {
+                const dataToBackend = await manejarArchivoStorage(file);
+                const dataFromBackend = await enviarDatosAlBackendStorage(dataToBackend);
+
+                if (dataFromBackend.length > 0) {
+                    actualizarArchivoStorage(file, dataFromBackend);
+                } else {
+                    console.error(`No se recibieron datos válidos del backend para ${file.name}.`);
+                }
+            } catch (error) {
+                console.error(`Error procesando el archivo ${file.name}:`, error);
+            }
         } else {
-            console.error("No se recibieron datos válidos del backend.");
+            console.error(`No se seleccionó ningún archivo.`);
         }
-    } else {
-        console.error("No se seleccionó ningún archivo.");
     }
 });
+
+
 
 async function manejarArchivoStorage(file) {
     const reader = new FileReader();
@@ -206,7 +197,7 @@ async function manejarArchivoStorage(file) {
 
 async function enviarDatosAlBackendStorage(data) {
     try {
-        const response = await fetch('daoAdmin/daoActualizarStorage-txt.php', {
+        const response = await fetch('dao/daoActualizarStorage-txt.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

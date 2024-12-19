@@ -39,7 +39,8 @@ foreach ($data as $record) {
                     END AS ConteoFinal
                 FROM Bitacora_Inventario
                 WHERE StorageBin = '$stor_bin' 
-                  AND NumeroParte = '$materialParte'";
+                  AND NumeroParte = '$materialParte'
+                  AND Estatus = 1";
     $rsconsPro = mysqli_query($conexion, $consP);
 
     if ($rsconsPro) {
