@@ -278,7 +278,7 @@ function descargarDataFromBackend(dataFromBackend) {
         CreatedDate: new Date()
     };
     wb.SheetNames.push("Test Sheet");
-    var ws_data = [['StorBin', 'StorUnit', 'Cantidad', 'InventoryItem', 'Plan', 'Storage_Type', 'Storage_Bin']]; // Encabezados de las columnas
+    var ws_data = [['InventoryItem', 'Record', 'Bin', 'Bin/n', 'Contador', 'Numero Parte', 'Plant','Cantidad','Sun','Type']]; // Encabezados de las columnas
 
     var storBinCounts = {}; // Para llevar un registro de los 'StorBin' que ya hemos visto
 
