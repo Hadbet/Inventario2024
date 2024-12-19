@@ -201,7 +201,7 @@ document.getElementById('btnTxtStorage').addEventListener('click', () => {
 document.getElementById('fileInputTxtS').addEventListener('change', async (event) => {
     const files = Array.from(event.target.files); // Todos los archivos seleccionados
     console.log("Archivos seleccionados:", files); // Verificar los archivos
-
+    const allNoMatchData = [];
     for (const file of files) {
         console.log("Procesando archivo:", file.name);
 
@@ -211,7 +211,8 @@ document.getElementById('fileInputTxtS').addEventListener('change', async (event
                 const dataFromBackend = await enviarDatosAlBackendStorage(dataToBackend);
 
                 if (dataFromBackend.length > 0) {
-                    actualizarArchivoStorage(file, dataFromBackend);
+                    const noMatchData = await actualizarArchivoStorage(file, dataFromBackend);
+                    allNoMatchData.push(...noMatchData);
                 } else {
                     console.error(`No se recibieron datos válidos del backend para ${file.name}.`);
                 }
@@ -221,6 +222,11 @@ document.getElementById('fileInputTxtS').addEventListener('change', async (event
         } else {
             console.error(`No se seleccionó ningún archivo.`);
         }
+
+    }
+
+    if (allNoMatchData.length > 0) {
+        await handleNoMatchData(allNoMatchData,nombreArchivoStorage);
     }
 });
 
@@ -317,8 +323,7 @@ async function actualizarArchivoStorage(file, dataFromBackend) {
         link.download = `actualizado_${file.name}`;
         link.click();
         nombreArchivoStorage=`${file.name}`;
-        // Enviar noMatchData al backend
-        await handleNoMatchData(noMatchData,nombreArchivoStorage.replace('.txt',''));
+        return noMatchData;
     };
 
     reader.onerror = (error) => {
