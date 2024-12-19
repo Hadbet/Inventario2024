@@ -161,29 +161,19 @@ async function manejarArchivoStorage(file) {
     return new Promise((resolve, reject) => {
         reader.onload = async (event) => {
             const contenido = event.target.result;
-            // Dividir las líneas del archivo
             const lineas = contenido.split(/\r?\n/);
 
-            //console.log("Contenido original del archivo:");
-            //console.log(contenido);
-
-            // Filtrar las líneas que contienen datos válidos
-            const datos= lineas
+            const datos = lineas
                 .map((linea) => linea.trim())
                 .filter((linea) => /^[0-9]+\s+\w+/.test(linea)) // Filtrar líneas válidas (empiezan con un número seguido de texto)
                 .map((linea) => {
-                    // Separar los datos de cada línea
                     const partes = linea.split(/\s+/);
-
-                    return partes.length >= 7
-                        ? { storUnit: partes[6] }
+                    return partes.length >= 2
+                        ? { storBin: partes[1], storUnit: partes[6] } // Devolver el valor de "Stor.bin" y "storUnit"
                         : null;
                 })
-                .filter(Boolean); // Eliminar entradas nulas
+                .filter(Boolean);
 
-            //console.log("Datos procesados desde el archivo:", datos);  // Verifica los datos procesados
-
-            // Resolvemos la promesa con los datos procesados
             resolve(datos);
         };
 
@@ -219,36 +209,24 @@ async function actualizarArchivoStorage(file, dataFromBackend) {
 
     reader.onload = function (event) {
         const originalContent = event.target.result;
-        const originalLines = originalContent.split(/\r?\n/); // Divide el archivo en líneas
-
-        //console.log("Contenido original del archivo:");
-        //console.log(originalContent);
+        const originalLines = originalContent.split(/\r?\n/);
 
         const updatedLines = originalLines.map((line) => {
-            // Divide la línea en partes basándose en espacios/tabulaciones
-            const parts = line.trim().split(/\s+/); // Separar por espacios múltiples
+            const parts = line.trim().split(/\s+/);
 
-            if (parts.length >= 8) { // Verificar que haya suficientes columnas
-                const storageUnit = parts[6].trim(); // Obtener la columna Storage Unit
-
-                //console.log(`Procesando línea: ${line}`);
-                //console.log(`Extracted storageUnit: ${storageUnit}`);
+            if (parts.length >= 8) {
+                const storBin = parts[1].trim(); // Obtener la columna Stor.bin
+                const storUnit = parts[6].trim(); // Obtener la columna Storage Unit
 
                 // Buscar coincidencia en dataFromBackend
                 const matchingData = dataFromBackend.find(
-                    (item) => item.storageUnit === storageUnit
+                    (item) => item.storBin === storBin && item.storUnit === storUnit
                 );
 
                 if (matchingData) {
-                    //console.log(`Coincidencia encontrada para storageUnit: ${storageUnit}`);
-                    //console.log(`Reemplazando ______________ con: ${matchingData.cantidad}`);
                     // Reemplazar el valor en la columna "Qty & UoM"
                     return line.replace(/____________/, matchingData.cantidad);
-                }else {
-                    //console.log(`No se encontró coincidencia para storageUnit: ${storageUnit}`);
                 }
-            }else {
-                //console.log("Formato de línea inesperado:", line);
             }
 
             return line; // Mantener la línea sin cambios si no hay coincidencia

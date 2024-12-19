@@ -22,11 +22,12 @@ $updatedData = [];
 
 foreach ($data as $record) {
     $storageUnit = mysqli_real_escape_string($conexion, $record['storUnit']);
+    $storageBin = mysqli_real_escape_string($conexion, $record['storBin']);
 
     $consP = "SELECT Cantidad
                 FROM Storage_Unit
                 WHERE Id_StorageUnit = '$storageUnit'
-                AND Estatus = 1";
+                AND Estatus = 1 and Storage_Bin = '$storageBin'";
     $rsconsPro = mysqli_query($conexion, $consP);
 
     if ($rsconsPro) {
