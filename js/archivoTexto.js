@@ -70,7 +70,7 @@ async function actualizarContenidoArchivo(file, dataFromBackend) {
     reader.onload = function (event) {
         const originalContent = event.target.result;
         const originalLines = originalContent.split(/\r?\n/); // Divide el archivo en líneas
-
+        const noMatchData = [];
         const updatedLines = originalLines.map((line) => {
             // Divide la línea en partes basándose en espacios/tabulaciones
             const parts = line.trim().split(/\s+/);
@@ -86,6 +86,9 @@ async function actualizarContenidoArchivo(file, dataFromBackend) {
 
                 if (matchingData) {
                     return line.replace("______________", matchingData.conteoFinal);
+                } else {
+                    // Si no se encontró una coincidencia, guardar los datos en noMatchData
+                    noMatchData.push({ storBin,materialNo });
                 }
             }
 
@@ -119,6 +122,75 @@ async function enviarDatosAlBackend(data) {
         return [];
     }
 }
+
+async function enviarDatosAlBackendAux(data) {
+    try {
+        const response = await fetch('daoAdmin/daoActualizar-txtAux.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+        return await response.json(); // Devolvemos los datos procesados por el backend
+    } catch (error) {
+        console.error('Error enviando datos al backend:', error);
+        return [];
+    }
+}
+
+function descargarDataFromBackendPro(dataFromBackend) {
+    var wb = XLSX.utils.book_new();
+    wb.Props = {
+        Title: "SheetJS",
+        Subject: "Numeros de parte faltantes",
+        Author: "Hadbetsito",
+        CreatedDate: new Date()
+    };
+    wb.SheetNames.push("Test Sheet");
+    var ws_data = [['InventoryItem', 'Record', 'Bin', 'Bin/n', 'Contador', 'Numero Parte', 'Plant','Cantidad','Sun','Type']]; // Encabezados de las columnas
+
+    var storBinCounts = {}; // Para llevar un registro de los 'StorBin' que ya hemos visto
+
+    for (var i = 0; i < dataFromBackend.length; i++) {
+        var storageUnit = dataFromBackend[i].storageUnit;
+        var inventoryItem = dataFromBackend[i].inventoryItem;
+        var storage_Bin = dataFromBackend[i].storage_Bin;
+        var invRecount = dataFromBackend[i].invRecount;
+        var numeroParte = dataFromBackend[i].numero_Parte;
+        var cantidad = dataFromBackend[i].cantidad;
+        var plan = dataFromBackend[i].plan;
+        var storage_Type = dataFromBackend[i].storage_Type;
+
+        // Si 'numeroParte' está vacío, saltar esta iteración
+        if (!numeroParte) {
+            continue;
+        }
+
+        // Si 'StorBin' no comienza con 'P', añadir un contador al final
+        var storage_Bin_Modified = storage_Bin;
+        if (!storage_Bin.startsWith('P')) {
+            storage_Bin_Modified = storage_Bin + '/' + (storBinCounts[storage_Bin] || 1);
+            storBinCounts[storage_Bin] = (storBinCounts[storage_Bin] || 0) + 1;
+        }
+
+        ws_data.push([inventoryItem, invRecount, storage_Bin, storage_Bin+"/"+storBinCounts[storage_Bin], storBinCounts[storage_Bin], numeroParte, plan, cantidad,storageUnit, storage_Type]);
+    }
+
+    var ws = XLSX.utils.aoa_to_sheet(ws_data);
+    wb.Sheets["Test Sheet"] = ws;
+    var wbout = XLSX.write(wb, {bookType:'xlsx',  type: 'binary'});
+
+    function s2ab(s) {
+        var buf = new ArrayBuffer(s.length);
+        var view = new Uint8Array(buf);
+        for (var i=0; i<s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+        return buf;
+    }
+
+    saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), 'Numeros de parte faltantes.xlsx');
+}
+
 
 /**********************************************************************************************************************/
 /*****************************************************TABLA STORAGE_UNIT***********************************************/

@@ -186,7 +186,7 @@ async function actualizarExcelQty(file, dataFromBackend) {
 
                 // Si hay coincidencia, actualizamos las celdas correspondientes
                 row.getCell(18).value = matchingData.cantidad;     // Columna M - cantidad
-                row.getCell(18).value = matchingData.unit;  // Columna N - unit
+                row.getCell(17).value = matchingData.unit;  // Columna N - unit
             } else {
                 //console.log(`No se encontró coincidencia para storageBin: ${storageBin}, materialNo: ${materialNo}, storageUnit: ${storageUnit}`);
             }
