@@ -229,12 +229,7 @@ async function actualizarArchivoStorage(file, dataFromBackend) {
                     return line.replace(/____________/, matchingData.cantidad);
                 } else {
                     // Si no se encontró una coincidencia, guardar los datos en noMatchData
-                    const noMatchItem = dataFromBackend.find(
-                        (item) => item.storBin === storBin && item.storUnit === storUnit
-                    );
-                    if (noMatchItem) {
-                        noMatchData.push(noMatchItem);
-                    }
+                    noMatchData.push({ storBin, storUnit });
                 }
             }
 
@@ -262,7 +257,7 @@ function descargarDataFromBackend(dataFromBackend) {
         CreatedDate: new Date()
     };
     wb.SheetNames.push("Test Sheet");
-    var ws_data = [];
+    var ws_data = [['StorBin', 'StorUnit', 'Cantidad', 'InventoryItem', 'Plan', 'Storage_Type', 'Storage_Bin']]; // Encabezados de las columnas
 
     for (var i = 0; i < dataFromBackend.length; i++) {
         var storBin = dataFromBackend[i].storBin;
