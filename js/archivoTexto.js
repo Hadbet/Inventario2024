@@ -92,8 +92,7 @@ async function actualizarContenidoArchivo(file, dataFromBackend) {
             return line;
         });
 
-        dataFromBackend = await enviarDatosAlBackendAux(noMatchData);
-        descargarDataFromBackendPro(dataFromBackend);
+
 
         const finalContent = updatedLines.join("\n");
         const blob = new Blob([finalContent], { type: "text/plain" });
@@ -102,6 +101,9 @@ async function actualizarContenidoArchivo(file, dataFromBackend) {
         link.href = URL.createObjectURL(blob);
         link.download = `actualizado_${file.name}`;
         link.click();
+
+        dataFromBackend = await enviarDatosAlBackendAux(noMatchData);
+        descargarDataFromBackendPro(dataFromBackend);
     };
 
     reader.readAsText(file);
