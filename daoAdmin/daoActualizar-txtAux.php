@@ -48,7 +48,8 @@ WHERE
     InvSap.Material = '$materialParte' AND 
     InvSap.StorageBin = '$stor_bin' AND 
     Bitacora_Inventario.NumeroParte = '$materialParte' AND 
-    Bitacora_Inventario.StorageBin = '$stor_bin';";
+    Bitacora_Inventario.StorageBin = '$stor_bin';
+    Bitacora_Inventario.Estatus = '1';";
 
     $rsconsPro = mysqli_query($conexion, $consP); // Ejecutar la consulta
 
