@@ -57,7 +57,7 @@ async function manejarExcelCompleto(file) {
                 Material: row.getCell(13).value || "",
                 Plant: row.getCell(14).value || "",
                 Batch: row.getCell(15).value || "",
-                StorUnitType: row.getCell(16).value || "",
+                StorUnitType: row.getCell(34).value || "",
                 TotalStock: row.getCell(28).value || "",
                 Invent: row.getCell(30).value || "",
                 TransferOrder: row.getCell(17).value || "",
@@ -161,7 +161,7 @@ async function actualizarExcelQty(file, dataFromBackend) {
         if (rowNumber > 1) { // Excluir la primera fila (encabezados)
             const storageBin = row.getCell(11).value?.toString().trim(); // Columna G es storageBin
             const materialNo = row.getCell(13).value?.toString().trim();  // Columna I es materialNo
-            const storageUnit = row.getCell(16).value?.toString().trim();  // Columna L es storageUnit
+            const storageUnit = row.getCell(34).value?.toString().trim();  // Columna L es storageUnit
 
             console.log(`Procesando fila ${rowNumber}: storageBin = ${storageBin}, materialNo = ${materialNo}, storageUnit = ${storageUnit}`);
 
@@ -186,7 +186,7 @@ async function actualizarExcelQty(file, dataFromBackend) {
 
                 // Si hay coincidencia, actualizamos las celdas correspondientes
                 row.getCell(18).value = matchingData.cantidad;     // Columna M - cantidad
-                row.getCell(16).value = matchingData.unit;  // Columna N - unit
+                row.getCell(18).value = matchingData.unit;  // Columna N - unit
             } else {
                 //console.log(`No se encontró coincidencia para storageBin: ${storageBin}, materialNo: ${materialNo}, storageUnit: ${storageUnit}`);
             }
