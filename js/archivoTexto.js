@@ -283,6 +283,7 @@ function descargarDataFromBackend(dataFromBackend) {
     var storBinCounts = {}; // Para llevar un registro de los 'StorBin' que ya hemos visto
 
     for (var i = 0; i < dataFromBackend.length; i++) {
+        var storageUnit = dataFromBackend[i].storageUnit;
         var inventoryItem = dataFromBackend[i].inventoryItem;
         var storage_Bin = dataFromBackend[i].storage_Bin;
         var invRecount = dataFromBackend[i].invRecount;
@@ -303,7 +304,7 @@ function descargarDataFromBackend(dataFromBackend) {
             storBinCounts[storage_Bin] = (storBinCounts[storage_Bin] || 0) + 1;
         }
 
-        ws_data.push([inventoryItem, invRecount, storage_Bin, storage_Bin_Modified, storBinCounts[storage_Bin], numeroParte, plan, cantidad, storage_Type]);
+        ws_data.push([inventoryItem, invRecount, storage_Bin, storage_Bin+"/"+storBinCounts[storage_Bin], storBinCounts[storage_Bin], numeroParte, plan, cantidad,storageUnit, storage_Type]);
     }
 
     var ws = XLSX.utils.aoa_to_sheet(ws_data);
