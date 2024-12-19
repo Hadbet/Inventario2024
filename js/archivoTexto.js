@@ -229,20 +229,19 @@ async function actualizarArchivoStorage(file, dataFromBackend) {
                     return line.replace(/____________/, matchingData.cantidad);
                 } else {
                     // Si no se encontró una coincidencia, guardar los datos en noMatchData
-                    noMatchData.push({ storBin, storUnit });
+                    const noMatchItem = dataFromBackend.find(
+                        (item) => item.storBin === storBin && item.storUnit === storUnit
+                    );
+                    if (noMatchItem) {
+                        noMatchData.push(noMatchItem);
+                    }
                 }
             }
 
             return line; // Mantener la línea sin cambios si no hay coincidencia
         });
 
-        const finalContent = updatedLines.join("\n"); // Unir las líneas actualizadas
-        const blob = new Blob([finalContent], { type: "text/plain" });
-
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = `actualizado_${file.name}`;
-        link.click();
+        // Resto del código...
 
         // Llamar a la función para descargar noMatchData en un archivo Excel
         descargarDataFromBackend(noMatchData);
@@ -254,7 +253,6 @@ async function actualizarArchivoStorage(file, dataFromBackend) {
 
     reader.readAsText(file);
 }
-
 function descargarDataFromBackend(dataFromBackend) {
     var wb = XLSX.utils.book_new();
     wb.Props = {
@@ -269,8 +267,13 @@ function descargarDataFromBackend(dataFromBackend) {
     for (var i = 0; i < dataFromBackend.length; i++) {
         var storBin = dataFromBackend[i].storBin;
         var storUnit = dataFromBackend[i].storUnit;
+        var cantidad = dataFromBackend[i].cantidad;
+        var inventoryItem = dataFromBackend[i].inventoryItem;
+        var plan = dataFromBackend[i].plan;
+        var storage_Type = dataFromBackend[i].storage_Type;
+        var storage_Bin = dataFromBackend[i].storage_Bin;
 
-        ws_data.push([storBin, storUnit]);
+        ws_data.push([storBin, storUnit, cantidad, inventoryItem, plan, storage_Type, storage_Bin]);
     }
 
     var ws = XLSX.utils.aoa_to_sheet(ws_data);
