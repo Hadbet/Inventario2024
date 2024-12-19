@@ -191,6 +191,8 @@ function descargarDataFromBackendPro(dataFromBackend) {
 /**********************************************************************************************************************/
 /*****************************************************TABLA STORAGE_UNIT***********************************************/
 /**********************************************************************************************************************/
+
+var nombreArchivoStorage="";
 document.getElementById('btnTxtStorage').addEventListener('click', () => {
     document.getElementById('fileInputTxtS').click();
 });
@@ -312,9 +314,9 @@ async function actualizarArchivoStorage(file, dataFromBackend) {
         link.href = URL.createObjectURL(blob);
         link.download = `actualizado_${file.name}`;
         link.click();
-
+        nombreArchivoStorage=`${file.name}`;
         // Enviar noMatchData al backend
-        await handleNoMatchData(noMatchData);
+        await handleNoMatchData(noMatchData,nombreArchivoStorage);
     };
 
     reader.onerror = (error) => {
@@ -324,9 +326,9 @@ async function actualizarArchivoStorage(file, dataFromBackend) {
     reader.readAsText(file);
 }
 
-async function handleNoMatchData(noMatchData) {
+async function handleNoMatchData(noMatchData,nombreArchivoStorage) {
     const dataFromBackendAux = await enviarDatosAlBackendStorageAux(noMatchData);
-    descargarDataFromBackend(dataFromBackendAux);
+    descargarDataFromBackend(dataFromBackendAux,nombreArchivoStorage);
 }
 
 async function enviarDatosAlBackendStorageAux(data) {
@@ -346,11 +348,11 @@ async function enviarDatosAlBackendStorageAux(data) {
         return [];
     }
 }
-function descargarDataFromBackend(dataFromBackend) {
+function descargarDataFromBackend(dataFromBackend,nombreArchivoStorage) {
     var wb = XLSX.utils.book_new();
     wb.Props = {
         Title: "SheetJS",
-        Subject: "Numeros de parte faltantes",
+        Subject: nombreArchivoStorage,
         Author: "Hadbetsito",
         CreatedDate: new Date()
     };
@@ -395,5 +397,5 @@ function descargarDataFromBackend(dataFromBackend) {
         return buf;
     }
 
-    saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), 'Numeros de parte faltantes.xlsx');
+    saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), nombreArchivoStorage+'.xlsx');
 }
