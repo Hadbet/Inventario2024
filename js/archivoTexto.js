@@ -85,8 +85,8 @@ async function actualizarContenidoArchivo(file, dataFromBackend) {
                 if (matchingData) {
                     return line.replace("______________", matchingData.conteoFinal);
                 } else {
-                    return line.replace("______________",'0');
                     noMatchData.push({ storBin, materialNo });
+                    return line.replace("______________",'0');
                 }
             }
 
