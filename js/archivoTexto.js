@@ -299,6 +299,7 @@ async function actualizarArchivoStorage(file, dataFromBackend) {
                     return line.replace(/____________/, matchingData.cantidad);
                 } else {
                     // Si no se encontró una coincidencia, guardar los datos en noMatchData
+                    return line.replace(/____________/, '0');
                     noMatchData.push({ storUnit });
                 }
             }
