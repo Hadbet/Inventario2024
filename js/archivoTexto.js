@@ -239,7 +239,7 @@ async function actualizarArchivoStorage(file, dataFromBackend) {
         // Resto del código...
 
         // Llamar a la función para descargar noMatchData en un archivo Excel
-        descargarDataFromBackend(noMatchData);
+        descargarDataFromBackend(dataFromBackend);
     };
 
     reader.onerror = (error) => {
