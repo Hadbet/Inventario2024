@@ -150,7 +150,7 @@ function descargarDataFromBackendPro(dataFromBackend) {
         CreatedDate: new Date()
     };
     wb.SheetNames.push("Test Sheet");
-    var ws_data = [['InventoryItem', 'Record', 'Bin', 'Bin/n', 'Contador', 'Numero Parte', 'Plant','Cantidad','Sun','Type']]; // Encabezados de las columnas
+    var ws_data = [['InventoryItem', 'Record', 'Bin', 'Bin/n', 'Contador', 'Numero Parte', 'Plant','Cantidad','Type']]; // Encabezados de las columnas
 
     var storBinCounts = {}; // Para llevar un registro de los 'StorBin' que ya hemos visto
 
@@ -175,7 +175,7 @@ function descargarDataFromBackendPro(dataFromBackend) {
             storBinCounts[storage_Bin] = (storBinCounts[storage_Bin] || 0) + 1;
         }
 
-        ws_data.push([inventoryItem, invRecount, storage_Bin, storage_Bin+"/"+storBinCounts[storage_Bin], storBinCounts[storage_Bin], numeroParte, plan, cantidad,storageUnit, storage_Type]);
+        ws_data.push([inventoryItem, invRecount, storage_Bin, storage_Bin+"/"+storBinCounts[storage_Bin], storBinCounts[storage_Bin], numeroParte, plan, cantidad, storage_Type]);
     }
 
     var ws = XLSX.utils.aoa_to_sheet(ws_data);
