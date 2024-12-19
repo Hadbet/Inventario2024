@@ -304,6 +304,15 @@ async function actualizarArchivoStorage(file, dataFromBackend) {
             return line; // Mantener la línea sin cambios si no hay coincidencia
         });
 
+        // Aquí es donde creamos el Blob y el enlace de descarga
+        const finalContent = updatedLines.join("\n");
+        const blob = new Blob([finalContent], { type: "text/plain" });
+
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `actualizado_${file.name}`;
+        link.click();
+
         // Enviar noMatchData al backend
         await handleNoMatchData(noMatchData);
     };
