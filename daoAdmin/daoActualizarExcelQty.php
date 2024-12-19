@@ -47,7 +47,8 @@ foreach ($data as $record) {
                 END AS Cantidad
            FROM Bitacora_Inventario
            WHERE StorageBin = '$storageBin' 
-             AND NumeroParte = '$noParte'";
+             AND NumeroParte = '$noParte'
+             AND Estatus = 1";
 
     $rsconsQty = mysqli_query($conexion, $consQ);
 
