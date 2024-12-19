@@ -43,10 +43,14 @@ AND Storage_Unit.Storage_Bin = '$storageBin'";
                 'storage_Bin' => $row['Storage_Bin']
             ];
         } else {
-            // Si no hay resultados, asignar valores predeterminados
+            // If no results, assign default values
             $updatedData[] = [
                 'storageUnit' => $storageUnit,
-                'cantidad' => '0'
+                'cantidad' => '0',
+                'inventoryItem' => '',
+                'plan' => '',
+                'storage_Type' => '',
+                'storage_Bin' => ''
             ];
         }
     } else {
