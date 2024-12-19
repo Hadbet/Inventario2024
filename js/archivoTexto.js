@@ -291,11 +291,16 @@ function descargarDataFromBackend(dataFromBackend) {
         var plan = dataFromBackend[i].plan;
         var storage_Type = dataFromBackend[i].storage_Type;
 
+        // Si 'numeroParte' está vacío, saltar esta iteración
+        if (!numeroParte) {
+            continue;
+        }
+
         // Si 'StorBin' no comienza con 'P' y ya lo hemos visto antes, añadir un contador al final
         var storage_Bin_Modified = storage_Bin;
         if (!storage_Bin.startsWith('P') && storage_Bin in storBinCounts) {
-            storBinCounts[storage_Bin]++;
             storage_Bin_Modified = storage_Bin + '/' + storBinCounts[storage_Bin];
+            storBinCounts[storage_Bin]++;
         } else {
             storBinCounts[storage_Bin] = 1;
         }
