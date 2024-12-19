@@ -208,7 +208,7 @@ async function actualizarArchivoStorage(file, dataFromBackend) {
     const reader = new FileReader();
     const noMatchData = []; // Array para guardar los datos que no se encontraron
 
-    reader.onload = function (event) {
+    reader.onload = async function (event) {
         const originalContent = event.target.result;
         const originalLines = originalContent.split(/\r?\n/);
 
@@ -229,17 +229,15 @@ async function actualizarArchivoStorage(file, dataFromBackend) {
                     return line.replace(/____________/, matchingData.cantidad);
                 } else {
                     // Si no se encontró una coincidencia, guardar los datos en noMatchData
-                    noMatchData.push({ storBin, storUnit });
+                    noMatchData.push({ storUnit });
                 }
             }
 
             return line; // Mantener la línea sin cambios si no hay coincidencia
         });
 
-        // Resto del código...
-
-        // Llamar a la función para descargar noMatchData en un archivo Excel
-        descargarDataFromBackend(dataFromBackend);
+        // Enviar noMatchData al backend
+        await handleNoMatchData(noMatchData);
     };
 
     reader.onerror = (error) => {
@@ -247,6 +245,29 @@ async function actualizarArchivoStorage(file, dataFromBackend) {
     };
 
     reader.readAsText(file);
+}
+
+async function handleNoMatchData(noMatchData) {
+    const dataFromBackendAux = await enviarDatosAlBackendStorageAux(noMatchData);
+    descargarDataFromBackend(dataFromBackendAux);
+}
+
+async function enviarDatosAlBackendStorageAux(data) {
+    try {
+        const response = await fetch('daoAdmin/daoActualizarStorage-txtAux.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ storageUnits: data }), // Enviar todo el array de storageUnit
+        });
+
+        const jsonResponse = await response.json();
+        return jsonResponse; // Devolvemos los datos procesados por el backend
+    } catch (error) {
+        console.error('Error enviando datos al backend:', error);
+        return [];
+    }
 }
 function descargarDataFromBackend(dataFromBackend) {
     var wb = XLSX.utils.book_new();
