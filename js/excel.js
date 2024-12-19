@@ -170,7 +170,7 @@ async function actualizarExcelQty(file, dataFromBackend) {
             if (storageUnit && storageUnit !== '') {
                 console.log(`Buscando por storageUnit: ${storageUnit}`);
                 matchingData = dataFromBackend.find(
-                    (item) => item.storageUnit === storageUnit
+                    (item) => item.storageUnit === storageUnit && item.storageBin === storageBin
                 );
             } else {
                 console.log(`Buscando por storageBin: ${storageBin}, materialNo: ${materialNo}`);
