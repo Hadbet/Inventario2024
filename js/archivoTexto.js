@@ -106,7 +106,7 @@ async function actualizarContenidoArchivo(file, dataFromBackend) {
 
 async function enviarDatosAlBackend(data) {
     try {
-        const response = await fetch('dao/daoActualizar-txt.php', {
+        const response = await fetch('daoAdmin/daoActualizar-txt.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -197,7 +197,7 @@ async function manejarArchivoStorage(file) {
 
 async function enviarDatosAlBackendStorage(data) {
     try {
-        const response = await fetch('dao/daoActualizarStorage-txt.php', {
+        const response = await fetch('daoAdmin/daoActualizarStorage-txt.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
