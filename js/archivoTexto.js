@@ -69,17 +69,15 @@ async function actualizarContenidoArchivo(file, dataFromBackend) {
 
     reader.onload = async function (event) {
         const originalContent = event.target.result;
-        const originalLines = originalContent.split(/\r?\n/); // Divide el archivo en líneas
+        const originalLines = originalContent.split(/\r?\n/);
         const noMatchData = [];
         const updatedLines = originalLines.map((line) => {
-            // Divide la línea en partes basándose en espacios/tabulaciones
             const parts = line.trim().split(/\s+/);
 
             if (parts.length >= 6) {
-                const storBin = parts[1]; // `storBin` es el segundo elemento
-                const materialNo = parts[5]; // `materialNo` es el sexto elemento
+                const storBin = parts[1];
+                const materialNo = parts[5];
 
-                // Buscar coincidencia en dataFromBackend
                 const matchingData = dataFromBackend.find(
                     (item) => item.storBin === storBin && item.materialNo === materialNo
                 );
@@ -87,18 +85,17 @@ async function actualizarContenidoArchivo(file, dataFromBackend) {
                 if (matchingData) {
                     return line.replace("______________", matchingData.conteoFinal);
                 } else {
-                    // Si no se encontró una coincidencia, guardar los datos en noMatchData
-                    noMatchData.push({ storBin,materialNo });
+                    noMatchData.push({ storBin, materialNo });
                 }
             }
 
-            return line; // Mantener la línea sin cambios si no hay coincidencia
+            return line;
         });
 
-        const dataFromBackend = await enviarDatosAlBackendAux(noMatchData);
+        dataFromBackend = await enviarDatosAlBackendAux(noMatchData);
         descargarDataFromBackendPro(dataFromBackend);
 
-        const finalContent = updatedLines.join("\n"); // Unir las líneas actualizadas
+        const finalContent = updatedLines.join("\n");
         const blob = new Blob([finalContent], { type: "text/plain" });
 
         const link = document.createElement("a");
@@ -109,16 +106,15 @@ async function actualizarContenidoArchivo(file, dataFromBackend) {
 
     reader.readAsText(file);
 }
+
 async function enviarDatosAlBackend(data) {
     try {
         const response = await fetch('daoAdmin/daoActualizar-txt.php', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json', },
             body: JSON.stringify(data),
         });
-        return await response.json(); // Devolvemos los datos procesados por el backend
+        return await response.json();
     } catch (error) {
         console.error('Error enviando datos al backend:', error);
         return [];
@@ -129,18 +125,15 @@ async function enviarDatosAlBackendAux(data) {
     try {
         const response = await fetch('daoAdmin/daoActualizar-txtAux.php', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json', },
             body: JSON.stringify(data),
         });
-        return await response.json(); // Devolvemos los datos procesados por el backend
+        return await response.json();
     } catch (error) {
         console.error('Error enviando datos al backend:', error);
         return [];
     }
 }
-
 function descargarDataFromBackendPro(dataFromBackend) {
     var wb = XLSX.utils.book_new();
     wb.Props = {
