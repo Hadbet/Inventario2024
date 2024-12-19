@@ -212,7 +212,11 @@ document.getElementById('fileInputTxtS').addEventListener('change', async (event
 
                 if (dataFromBackend.length > 0) {
                     const noMatchData = await actualizarArchivoStorage(file, dataFromBackend);
-                    allNoMatchData.push(...noMatchData);
+                    if (Array.isArray(noMatchData)) {
+                        allNoMatchData.push(...noMatchData);
+                    } else {
+                        console.error(`noMatchData no es un array:`, noMatchData);
+                    }
                 } else {
                     console.error(`No se recibieron datos válidos del backend para ${file.name}.`);
                 }
