@@ -357,7 +357,7 @@ function descargarDataFromBackend(dataFromBackend,nombreArchivoStorage) {
         CreatedDate: new Date()
     };
     wb.SheetNames.push("Test Sheet");
-    var ws_data = [['InventoryItem', 'Record', 'Bin', 'Bin/n', 'Contador', 'Numero Parte', 'Plant','Cantidad','Sun','Type']]; // Encabezados de las columnas
+    var ws_data = [['InventoryItem', 'Page', 'Bin', 'Bin/n', 'Contador', 'Numero Parte', 'Plant','Cantidad','Sun','Type']]; // Encabezados de las columnas
 
     var storBinCounts = {}; // Para llevar un registro de los 'StorBin' que ya hemos visto
 
@@ -365,7 +365,7 @@ function descargarDataFromBackend(dataFromBackend,nombreArchivoStorage) {
         var storageUnit = dataFromBackend[i].storageUnit;
         var inventoryItem = dataFromBackend[i].inventoryItem;
         var storage_Bin = dataFromBackend[i].storage_Bin;
-        var invRecount = dataFromBackend[i].invRecount;
+        var invRecount = dataFromBackend[i].inventoryPage;
         var numeroParte = dataFromBackend[i].numero_Parte;
         var cantidad = dataFromBackend[i].cantidad;
         var plan = dataFromBackend[i].plan;
