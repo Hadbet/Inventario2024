@@ -67,7 +67,7 @@ async function manejarArchivo(file) {
 async function actualizarContenidoArchivo(file, dataFromBackend) {
     const reader = new FileReader();
 
-    reader.onload = function (event) {
+    reader.onload = async function (event) {
         const originalContent = event.target.result;
         const originalLines = originalContent.split(/\r?\n/); // Divide el archivo en líneas
         const noMatchData = [];
@@ -95,6 +95,9 @@ async function actualizarContenidoArchivo(file, dataFromBackend) {
             return line; // Mantener la línea sin cambios si no hay coincidencia
         });
 
+        const dataFromBackend = await enviarDatosAlBackendAux(noMatchData);
+        descargarDataFromBackendPro(dataFromBackend);
+
         const finalContent = updatedLines.join("\n"); // Unir las líneas actualizadas
         const blob = new Blob([finalContent], { type: "text/plain" });
 
@@ -106,7 +109,6 @@ async function actualizarContenidoArchivo(file, dataFromBackend) {
 
     reader.readAsText(file);
 }
-
 async function enviarDatosAlBackend(data) {
     try {
         const response = await fetch('daoAdmin/daoActualizar-txt.php', {
@@ -153,14 +155,13 @@ function descargarDataFromBackendPro(dataFromBackend) {
     var storBinCounts = {}; // Para llevar un registro de los 'StorBin' que ya hemos visto
 
     for (var i = 0; i < dataFromBackend.length; i++) {
-        var storageUnit = dataFromBackend[i].storageUnit;
         var inventoryItem = dataFromBackend[i].inventoryItem;
-        var storage_Bin = dataFromBackend[i].storage_Bin;
+        var storage_Bin = dataFromBackend[i].storageBin;
         var invRecount = dataFromBackend[i].invRecount;
-        var numeroParte = dataFromBackend[i].numero_Parte;
-        var cantidad = dataFromBackend[i].cantidad;
+        var numeroParte = dataFromBackend[i].material;
+        var cantidad = dataFromBackend[i].conteoFinal;
         var plan = dataFromBackend[i].plan;
-        var storage_Type = dataFromBackend[i].storage_Type;
+        var storage_Type = dataFromBackend[i].storageType;
 
         // Si 'numeroParte' está vacío, saltar esta iteración
         if (!numeroParte) {

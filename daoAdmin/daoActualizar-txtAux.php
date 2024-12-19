@@ -25,35 +25,36 @@ $updatedData = [];
 foreach ($data as $record) {
     $stor_bin = mysqli_real_escape_string($conexion, $record['storBin']);
     $materialParte = mysqli_real_escape_string($conexion, $record['materialNo']);
-
     $consP = "SELECT 
-    InvSap.InventoryItem, 
-    InvSap.InvRecount, 
-    InvSap.StorageType,
-    InvSap.Plant,
-    InvSap.Material,
-    Bitacora_Inventario.ConteoFinal
+InvSap.InventoryItem, 
+InvSap.InvRecount, 
+InvSap.StorageType,
+InvSap.StorageBin,
+InvSap.Plant,
+InvSap.Material,
+Bitacora_Inventario.ConteoFinal
 FROM 
-    InvSap
+InvSap
 INNER JOIN 
-    (SELECT 
-        CASE 
-            WHEN (SegundoConteo IS NULL OR SegundoConteo = 0) AND (TercerConteo IS NULL OR TercerConteo = 0) THEN PrimerConteo 
-            WHEN (TercerConteo IS NULL OR TercerConteo = 0) AND (SegundoConteo IS NOT NULL AND SegundoConteo != 0) THEN SegundoConteo 
-            WHEN (TercerConteo IS NOT NULL AND TercerConteo != 0) THEN TercerConteo 
-        END AS ConteoFinal, 
-        NumeroParte, 
-        StorageBin 
-     FROM 
-        Bitacora_Inventario 
-     WHERE 
-        StorageBin = 'PVB_002' AND 
-        NumeroParte = '10720743' AND 
-        Estatus = 1) AS Bitacora_Inventario
+(SELECT 
+    CASE 
+        WHEN (SegundoConteo IS NULL OR SegundoConteo = 0) AND (TercerConteo IS NULL OR TercerConteo = 0) THEN PrimerConteo 
+        WHEN (TercerConteo IS NULL OR TercerConteo = 0) AND (SegundoConteo IS NOT NULL AND SegundoConteo != 0) THEN SegundoConteo 
+        WHEN (TercerConteo IS NOT NULL AND TercerConteo != 0) THEN TercerConteo 
+    END AS ConteoFinal, 
+    NumeroParte, 
+    StorageBin 
+ FROM 
+    Bitacora_Inventario 
+ WHERE 
+    StorageBin = '$stor_bin' AND 
+    NumeroParte = '$materialParte' AND 
+    Estatus = 1) AS Bitacora_Inventario
 ON 
-    InvSap.Material = Bitacora_Inventario.NumeroParte AND 
-    InvSap.StorageBin = Bitacora_Inventario.StorageBin;";
-    $rsconsPro = mysqli_query($conexion, $consP);
+InvSap.Material = Bitacora_Inventario.NumeroParte AND 
+InvSap.StorageBin = Bitacora_Inventario.StorageBin;";
+
+    $rsconsPro = mysqli_query($conexion, $consP); // Ejecutar la consulta
 
     if ($rsconsPro) {
         if ($row = mysqli_fetch_assoc($rsconsPro)) {
@@ -63,7 +64,8 @@ ON
                 'storageType' => $row['StorageType'],
                 'plant' => $row['Plant'],
                 'conteoFinal' => $row['ConteoFinal'],
-                'material' => $row['Material']
+                'material' => $row['Material'],
+                'storageBin' => $row['StorageBin']
             ];
         } else {
             // Si no hay resultados, asignar valores predeterminados
@@ -73,7 +75,8 @@ ON
                 'storageType' => '0',
                 'plant' => '0',
                 'conteoFinal' => '0',
-                'material' => '0'
+                'material' => '0',
+                'storageBin' => '0'
             ];
         }
     } else {
