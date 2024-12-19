@@ -296,13 +296,11 @@ function descargarDataFromBackend(dataFromBackend) {
             continue;
         }
 
-        // Si 'StorBin' no comienza con 'P' y ya lo hemos visto antes, añadir un contador al final
+        // Si 'StorBin' no comienza con 'P', añadir un contador al final
         var storage_Bin_Modified = storage_Bin;
-        if (!storage_Bin.startsWith('P') && storage_Bin in storBinCounts) {
-            storage_Bin_Modified = storage_Bin + '/' + storBinCounts[storage_Bin];
-            storBinCounts[storage_Bin]++;
-        } else {
-            storBinCounts[storage_Bin] = 1;
+        if (!storage_Bin.startsWith('P')) {
+            storage_Bin_Modified = storage_Bin + '/' + (storBinCounts[storage_Bin] || 1);
+            storBinCounts[storage_Bin] = (storBinCounts[storage_Bin] || 0) + 1;
         }
 
         ws_data.push([inventoryItem, invRecount, storage_Bin, storage_Bin_Modified, storBinCounts[storage_Bin], numeroParte, plan, cantidad, storage_Type]);
