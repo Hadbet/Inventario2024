@@ -316,7 +316,7 @@ async function actualizarArchivoStorage(file, dataFromBackend) {
         link.click();
         nombreArchivoStorage=`${file.name}`;
         // Enviar noMatchData al backend
-        await handleNoMatchData(noMatchData,nombreArchivoStorage);
+        await handleNoMatchData(noMatchData,nombreArchivoStorage.replace('.txt',''));
     };
 
     reader.onerror = (error) => {
